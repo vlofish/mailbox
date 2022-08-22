@@ -1,4 +1,4 @@
-import { ButtonCompInterface } from "../common/interfaces/componentsInterfaces";
+import { ButtonCompInterface } from "../common/interfaces/";
 
 
 export function ButtonComp(props: ButtonCompInterface) {
