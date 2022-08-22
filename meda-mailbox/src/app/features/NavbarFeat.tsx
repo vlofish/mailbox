@@ -1,11 +1,11 @@
 // =========================================================================
+import { Dispatch } from "redux";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { ButtonComp } from "../components/ButtonComp";
 import { MailboxInterface } from "../common/interfaces/";
 import { fetchAllMessagesThunk } from "../common/store/thunks/mailboxThunk";
-import { Dispatch } from "@reduxjs/toolkit";
 // =========================================================================
 
 let total: number;
@@ -18,7 +18,7 @@ export function NavbarFeat() {
 	unread = useSelector((state: MailboxInterface) => state.unread);
 
 	useEffect(() => {
-			dispatch(fetchAllMessagesThunk());
+		dispatch(fetchAllMessagesThunk());
 	}, [])
 
 	return (
