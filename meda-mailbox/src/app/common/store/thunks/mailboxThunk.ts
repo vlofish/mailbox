@@ -1,3 +1,4 @@
+import { Dispatch } from "@reduxjs/toolkit";
 import mailboxSvc from "../../services/mailboxService";
 import { fetchAll } from "../slicers/mailboxSlice";
 
@@ -8,12 +9,11 @@ import { fetchAll } from "../slicers/mailboxSlice";
  * @returns 
  */
 export function fetchAllMessagesThunk() {
-  return function getMessages(dispatch: any, getState: any) {
-    mailboxSvc.getMessages().subscribe(
-      (res: any) => {
-        console.log('Inside map inside thunk.');
-        dispatch(fetchAll(res));
-      }
-    )
+  return function getMessages(dispatch: Dispatch, getState: Function) {
+    // TODO: add debouncer from lodash or rxjs for protecting against many calls
+    mailboxSvc.getMessages()
+      .subscribe(
+        (res: any) => dispatch(fetchAll(res))
+      ) 
   }
 }

@@ -15,11 +15,25 @@ class MailboxService {
     }
 
   // TODO: get everything from a sw category
+  // TODO: handle BE error or map() error
   getMessages(): Observable<any> {
     return httpSvc.get()
       .pipe(
         first(),
-        map((res: any) => res), // placeholder for data handling
+        map((res: any) => {
+          const messages = [];
+
+          // TODO: should we sha the body? would be cool
+          for (let key in res) {
+            messages.push({
+              subject: key,
+              preview: 'preview placeholder',
+              read: false
+            })
+          }
+
+          return messages;
+        }),
       );
   }
 

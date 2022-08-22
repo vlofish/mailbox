@@ -1,13 +1,25 @@
-import { useSelector } from "react-redux";
+// =========================================================================
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import { ButtonComp } from "../components/ButtonComp";
 import { MailboxInterface } from "../common/interfaces/";
+import { fetchAllMessagesThunk } from "../common/store/thunks/mailboxThunk";
+import { Dispatch } from "@reduxjs/toolkit";
+// =========================================================================
 
 let total: number;
 let unread: number;
+let dispatch: Dispatch<any>;
 
 export function NavbarFeat() {
+	dispatch = useDispatch();
 	total = useSelector((state: MailboxInterface) => state.total);
 	unread = useSelector((state: MailboxInterface) => state.unread);
+
+	useEffect(() => {
+			dispatch(fetchAllMessagesThunk());
+	}, [])
 
 	return (
 		<div>
