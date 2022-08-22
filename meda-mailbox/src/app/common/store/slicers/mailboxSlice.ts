@@ -26,10 +26,10 @@ const mailboxReducers = {
   // TODO: not sure still about how to set the flag fetching...
 
   // TODO: fetch gets the specific selected message
-  fetch: (state: any, payload: any) => {
+  fetch: (state: any, { payload }: any) => {
     return {
       ...state,
-      message: payload.message,
+      message: payload,
     }
   },
   // TODO: fetchAll gets all the messages for the sidebar preview
