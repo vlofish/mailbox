@@ -1,29 +1,34 @@
-const mockedMails: {subject: string, preview: string}[] = [
-	{
-		subject: 'S1',
-		preview: 'Hello S1'
-	},
-	{
-		subject: 'S2',
-		preview: 'Hello S2'
-	}
-]
+// ====================================================
+import { useSelector } from "react-redux";
+import { ButtonComp } from "../components/ButtonComp";
+import { MailboxInterface } from "../common/interfaces";
+// ====================================================
+
+let messages: any[];
 
 export function SidebarFeat() {
+	messages = useSelector((state: MailboxInterface) => {
+		return state.messages;
+	});
+
 	return (
-		<div>	
-				{ mockedMails.map((mail, index) => {
-					return (
-						<div key={index}> 
+		<div>
+			{messages.map((message, index) => {
+				return (
+					<div key={index}>
 						<hr />
-						Subject: {mail.subject} 
-						<br /> 
-						Preview: {mail.preview}
+						Subject: {message.subject}
+						<br />
+						Preview: {message.preview}
+						<br />
+						<ButtonComp text='Show' />
+						<ButtonComp text='Delete' />
+						<ButtonComp text='Mark as Read' />
 						<hr />
-						</div>
-					);
-				}) }
-			
+					</div>
+				);
+			})}
+
 		</div>
 	);
 }
