@@ -1,6 +1,8 @@
+// ===========================================
 import { ajax } from 'rxjs/ajax';
 import { catchError } from 'rxjs/operators';
-import { throwError, Observable } from 'rxjs';
+import { throwError, Observable, of } from 'rxjs';
+// ===========================================
 
 // TODO: decorator for making this singleton
 class HttpService {
@@ -20,24 +22,34 @@ class HttpService {
   }
 
   /**
-   * Placeholder; this is still missing the impl
+   * This is just a placeholder.
+   * DO NOT USE THIS
+   * @returns 
    */
-  post(uri: string = 'people/'): Observable<any> {
-    return this.get(uri).pipe(
+  post(): Observable<any> {
+    return of({}).pipe(
       catchError(this.handleError)
     );
   }
 
-  // TODO: missing impl
-  put(uri: string = 'people/'): Observable<any> {
-    return this.get(uri).pipe(
+  /**
+   * This is just a placeholder.
+   * DO NOT USE THIS
+   * @returns 
+   */
+  put(): Observable<any> {
+    return of({}).pipe(
       catchError(this.handleError)
     );
   }
 
-  // TODO: missing impl
-  delete(uri: string = 'people/'): Observable<any> {
-    return this.get(uri).pipe(
+  /**
+   * This is just a placeholder.
+   * DO NOT USE THIS
+   * @returns 
+   */
+  delete(): Observable<any> {
+    return of({}).pipe(
       catchError(this.handleError)
     );
   }
