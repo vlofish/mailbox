@@ -15,8 +15,8 @@ class MailboxService {
     }
 
   // TODO: get everything from a sw category
-  getMessages(): void {
-    httpSvc.get()
+  getMessages(): Observable<any> {
+    return httpSvc.get()
       .pipe(
         first(),
         map((res: any) => res), // placeholder for data handling
@@ -25,8 +25,8 @@ class MailboxService {
 
   // TODO: handle the existing object for marking a message as read
   // TODO: this might not even be needed here after all
-  readMessage(): void {
-    httpSvc.post()
+  readMessage(): Observable<any> {
+    return httpSvc.post()
       .pipe(
         first(),
         map((res: any) => res), // placeholder for data handling
