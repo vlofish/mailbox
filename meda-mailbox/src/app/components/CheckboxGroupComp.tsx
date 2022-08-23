@@ -1,13 +1,15 @@
-export function CheckboxGroupComp() {
+export function CheckboxGroupComp(props: any) {
   return(
-    <>
-      How u felt?
-      <input type="radio" id="sad" name="mailbox_feeling" value="Sad" />
-      <label>SAD</label>
+    <div onChange={ props.handleChange }>
+      <label>Tell us how you felt using our mailbox?</label>
+      <input type="radio" id="dissapointed" name="mailbox_feeling" value="dissapointed" />
+      <label> Dissapointed </label>
 
-      <input type="radio" id="happy" name="mailbox_feeling" value="Happy" />
-      <label>Happy</label>
-      <br />
-    </>
+      <input type="radio" id="ok" name="mailbox_feeling" value="ok" />
+      <label> Ok </label>
+
+      <input type="radio" id="happy" name="mailbox_feeling" value="happy" />
+      <label> Happy </label>
+    </div>
   );
 }
