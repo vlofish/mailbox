@@ -10,8 +10,17 @@ import { TextareaComp } from "../components/TextareaComp";
 import { CheckboxGroupComp } from "../components/CheckboxGroupComp";
 // =================================================================
 
+//TODO: if time implement rxfire
+
 let comment = '';
+let feeling = '';
+
 const comments = ref(FIRE_DB, `${DB_NAME}/`);
+
+// TODO: protect with debounce from too many events
+//TODO: WIP
+const handleTextareaChange = (text: string) => { comment = text };
+const handleRadioGroupChange = (optionChosen: string) => { feeling = optionChosen };
 
 onValue(comments, (snapshot) => {
   let counter = 1;
@@ -27,19 +36,11 @@ onValue(comments, (snapshot) => {
   }
 });
 
-// TODO: protect with debounce from too many events
-//TODO: WIP
-const handleTextareaChange = (character: string) => {
-  console.log(character);
-  comment += character;
-  console.log(comment);
-}
-
 //POST
 function postComment() {
   const postData = {
+    feeling,
     message: comment,
-    feeling: "ok", // TBD
   };
   const updates: any = {};
   const newPostKey = push(child(ref(FIRE_DB), DB_NAME)).key;
@@ -52,12 +53,13 @@ function postComment() {
 export function FeedbackFeat() {
   return (
     <div>
-      <CheckboxGroupComp />
+      <CheckboxGroupComp 
+        handleChange={ (e: any) => handleRadioGroupChange(e.target.value) }
+        />
       <TextareaComp 
         title="Tell us why"
-        handleChange={(e: any) => { handleTextareaChange(e.target.value) }}
+        handleChange={ (e: any) => handleTextareaChange(e.target.value) }
         />
-      <br />
       <br />
       <ButtonComp
         text="Post Comment"
