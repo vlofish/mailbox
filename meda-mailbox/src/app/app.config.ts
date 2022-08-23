@@ -13,6 +13,8 @@ export const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+
+export const dbName = 'feedback';
 export const db = getDatabase(app);
 
 
