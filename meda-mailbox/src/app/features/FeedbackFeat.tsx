@@ -4,10 +4,10 @@ import {
   onValue,
   child, push, update
 } from "firebase/database";
-import { db as FIRE_DB, dbName as DB_NAME } from "../app.config";
 import { ButtonComp } from "../components/ButtonComp";
 import { TextareaComp } from "../components/TextareaComp";
-import { CheckboxGroupComp } from "../components/CheckboxGroupComp";
+import { db as FIRE_DB, dbName as DB_NAME } from "../app.config";
+import { RadioboxGroupComp } from "../components/RadioboxGroupComp";
 // =================================================================
 
 //TODO: if time implement rxfire
@@ -53,14 +53,19 @@ function postComment() {
 export function FeedbackFeat() {
   return (
     <div>
-      <CheckboxGroupComp 
+      <RadioboxGroupComp 
         handleChange={ (e: any) => handleRadioGroupChange(e.target.value) }
         />
+      
+      <br />
+
       <TextareaComp 
         title="Tell us why"
         handleChange={ (e: any) => handleTextareaChange(e.target.value) }
         />
+
       <br />
+
       <ButtonComp
         text="Post Comment"
         handleClick={() => { postComment() }} />
