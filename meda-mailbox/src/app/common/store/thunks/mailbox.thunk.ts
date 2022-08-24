@@ -17,9 +17,9 @@ export const fetchAllMessagesThunk = () =>
 
 // TODO: add debouncer from lodash or rxjs for protecting against many calls
 // TODO: add err scenario
-export const fetchSpecificMessageThunk = (categoryID: string) =>
+export const fetchSpecificMessageThunk = (messageID: string, categoryID: string) =>
   (dispatch: Dispatch) => {
-    mailboxSvc.getMessage(categoryID)
+    mailboxSvc.getMessage(messageID, categoryID)
       .subscribe(
         (res: any) => {
           dispatch(fetch(res));
@@ -33,8 +33,14 @@ export const removeSpecificMessageThunk = (messageID: string) =>
     mailboxSvc.deleteMessage(messageID)
       .subscribe(
         () => {
-          const filteredMsgs = [...getState().messages.filter((msg: { id: string}) => msg.id !== messageID)];
-          dispatch(remove(filteredMsgs));
+          const clearCurrentMessage = getState().message.id === messageID; // Clear message from view box
+          const notRemovedMessages = [...getState().messages.filter((msg: { id: string}) => msg.id !== messageID)];
+          const payload = {
+            notRemovedMessages,
+            clearCurrentMessage,
+          }
+          
+          dispatch(remove(payload));
         }
       )
   }
