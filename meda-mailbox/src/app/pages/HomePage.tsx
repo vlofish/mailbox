@@ -5,7 +5,6 @@ import Container from '@mui/material/Container';
 import { NavbarFeat } from "../features/NavbarFeat";
 import { SidebarFeat } from '../features/SidebarFeat';
 import { FeedbackFeat } from "../features/FeedbackFeat";
-import { SearchMailFeat } from "../features/SearchMailFeat";
 import { MessageViewFeat } from "../features/MessageViewFeat";
 // =============================================================
 /* 
