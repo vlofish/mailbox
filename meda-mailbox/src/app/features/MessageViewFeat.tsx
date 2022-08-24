@@ -1,5 +1,10 @@
+// =====================================================
+import { useSelector } from "react-redux";
 import { ButtonComp } from "../components/ButtonComp";
-import { MUIButtonCompInterface } from "../common/interfaces/component.interface";
+import { MailboxInterface } from "../common/interfaces";
+import { MUIButtonCompInterface } from "../common/interfaces";
+// =====================================================
+
 
 const muiButtonProps: MUIButtonCompInterface = {
 	size: 'small',
@@ -8,6 +13,8 @@ const muiButtonProps: MUIButtonCompInterface = {
 }
 
 export function MessageViewFeat() {
+	const message = useSelector((state: MailboxInterface) => state.message);
+
 	return (
 		<div>
 			<div>
@@ -15,12 +22,24 @@ export function MessageViewFeat() {
 					text="X"
 					mui={ muiButtonProps }
 					/>
-				<div>From: Classified</div>
-				<div>Subject: X</div>
+				<div>From: {message.from}</div>
+				<div>Subject: {message.subject}</div>
 			</div>
 			<p>
-				The body of the msg goes here
+				{message.message}
 			</p>
+			<ButtonComp 
+				text="Close"
+				mui={ muiButtonProps }
+			/>
+			<ButtonComp
+				text="Delete"
+				mui={muiButtonProps}
+			/>
+			<ButtonComp
+				text="Mark as Read"
+				mui={muiButtonProps}
+			/>
 		</div>
 	);
 }

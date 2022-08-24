@@ -1,5 +1,5 @@
 import Button from '@mui/material/Button';
-import { ButtonCompInterface } from "../common/interfaces/component.interface";
+import { ButtonCompInterface } from "../common/interfaces/";
 
 
 export function ButtonComp(props: ButtonCompInterface) {

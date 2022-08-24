@@ -2,8 +2,8 @@
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 
-import SidebarFeat from '../features/SidebarFeat';
 import { NavbarFeat } from "../features/NavbarFeat";
+import { SidebarFeat } from '../features/SidebarFeat';
 import { FeedbackFeat } from "../features/FeedbackFeat";
 import { SearchMailFeat } from "../features/SearchMailFeat";
 import { MessageViewFeat } from "../features/MessageViewFeat";
@@ -25,8 +25,6 @@ const HomeGrid = () => {
 				<NavbarFeat />
 			</Grid>
 			<Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-				<SearchMailFeat />
-				<hr />
 				<SidebarFeat />
 			</Grid>
 			<Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
