@@ -1,10 +1,10 @@
 // =============================================================
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
-import FeedbackFeat from "../features/FeedbackFeat";
 
 import SidebarFeat from '../features/SidebarFeat';
 import { NavbarFeat } from "../features/NavbarFeat";
+import { FeedbackFeat } from "../features/FeedbackFeat";
 import { SearchMailFeat } from "../features/SearchMailFeat";
 import { MessageViewFeat } from "../features/MessageViewFeat";
 // =============================================================
