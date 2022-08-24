@@ -1,7 +1,8 @@
 // ========================================
-import httpSvc from "./httpService";
-import { Observable } from "rxjs";
+import httpSvc from "./http.service";
+import { Observable, of } from "rxjs";
 import { map, first } from "rxjs/operators";
+import { MailboxMessagesInterface } from "../interfaces";
 // =========================================
 
 class MailboxService {
@@ -41,14 +42,15 @@ class MailboxService {
     return httpSvc.get()
       .pipe(
         first(),
-        map((res: any) => {
-          const messages = [];
-
+        map((res: any, index) => {
+          const messages: MailboxMessagesInterface[] = [];
+          
           for (let key in res) {
             messages.push({
+              id: `m${index++}`,
+              read: false,
               subject: key,
               preview: 'preview placeholder',
-              read: false
             })
           }
 
@@ -73,8 +75,10 @@ class MailboxService {
   // TODO: this might not even be needed here after all
   // TODO: this might be replaced by a store handling instead
   // TODO: although we could emulate the BE call for this....
-  deleteMessage(): Observable<number> {
-    return httpSvc.delete()
+  deleteMessage(messageID: string): Observable<string> {
+    if (!messageID) return of(`ID not provided, provide ID for deleting.`);
+
+    return httpSvc.delete(messageID)
       .pipe(
         first(),
         map((res: any) => res), // placeholder for data handling
