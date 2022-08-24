@@ -1,9 +1,9 @@
-import { FeedbackFeat } from "./app/features/FeedbackFeat";
+import { HomePage } from "./app/pages/HomePage";
 
 function App() {
   return (
     <div className="App">
-      <FeedbackFeat />
+      <HomePage />
     </div>
   );
 }

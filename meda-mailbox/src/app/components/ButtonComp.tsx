@@ -1,7 +1,15 @@
-export function ButtonComp(props: {text: string, handleClick: any}) {
+import Button from '@mui/material/Button';
+import { ButtonCompInterface } from "../common/interfaces/component.interface";
+
+
+export function ButtonComp(props: ButtonCompInterface) {
   return (
-    <button onClick={props.handleClick}>
-      {props.text}
-    </button>
+    <Button
+      onClick={ props.handleClick }
+      size = { props.mui.size } 
+      color = { props.mui.color }
+      variant = { props.mui.variant }>
+      { props.text }
+    </Button>
   );
 }
