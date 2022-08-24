@@ -14,7 +14,7 @@ let mailboxDispatch: Dispatch<any>;
 let removeMessageDispatch: (messageID: string) => Dispatch<any>;
 
 const handleRemovalOfSpecificMessage = (messageID: string) => removeMessageDispatch(messageID);
-const handleDisplayOfSpecificMessage = (categoryID: string) => mailboxDispatch(fetchSpecificMessageThunk(categoryID));
+const handleDisplayOfSpecificMessage = (messageID:string, categoryID: string) => mailboxDispatch(fetchSpecificMessageThunk(messageID, categoryID));
 
 const muiButtonProps: MUIButtonCompInterface = {
 	size: 'small',
@@ -52,7 +52,7 @@ export function SidebarFeat() {
 						<ButtonComp 
 							text='Show Message'
 							mui={muiButtonProps}
-							handleClick={() => handleDisplayOfSpecificMessage(message.subject)}
+							handleClick={() => handleDisplayOfSpecificMessage(message.id, message.subject)}
 							/>
 						<ButtonComp
 							text='Delete'

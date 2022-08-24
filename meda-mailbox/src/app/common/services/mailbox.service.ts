@@ -14,7 +14,7 @@ class MailboxService {
    * @param random 
    * @returns 
    */
-  getMessage(categoryID: string, random?: number): Observable<any> {
+  getMessage(messageID: string, categoryID: string, random?: number): Observable<any> {
     if (!random) random = Math.ceil(Math.random() * 10);
 
     // TODO: handle any error thrown by httpSvc
@@ -27,7 +27,8 @@ class MailboxService {
           const message = `Look for ${ res.name }. ${ res.gender === 'male' ? ' He is' : ' She is'} ${ res.height } cms. tall.`
           return {
             message,
-            from: 'Classified',
+            id: messageID,
+            from: '52.58.110.120:443',
             subject: categoryID,
           };
         }),
