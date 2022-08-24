@@ -1,37 +1,48 @@
-import { MessageViewFeat } from "../features/MessageViewFeat";
-import { NavbarFeat } from "../features/NavbarFeat";
-import { SearchMailFeat } from "../features/SearchMailFeat";
-import { SidebarFeat } from "../features/SidebarFeat";
+// =============================================================
+import Grid from '@mui/material/Grid';
+import Container from '@mui/material/Container';
 
-import './HomePage.css';
+import { NavbarFeat } from "../features/NavbarFeat";
+import { SidebarFeat } from '../features/SidebarFeat';
+import { FeedbackFeat } from "../features/FeedbackFeat";
+import { SearchMailFeat } from "../features/SearchMailFeat";
+import { MessageViewFeat } from "../features/MessageViewFeat";
+// =============================================================
+/* 
+const Item = styled(Paper)(({ theme }) => ({
+	backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+	...theme.typography.body2,
+	padding: theme.spacing(1),
+	textAlign: 'center',
+	color: theme.palette.text.secondary,
+}));
+ */
+
+const HomeGrid = () => {
+	return (
+		<Grid container spacing={2}>
+			<Grid item xs={12}>
+				<NavbarFeat />
+			</Grid>
+			<Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+				<SearchMailFeat />
+				<hr />
+				<SidebarFeat />
+			</Grid>
+			<Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+				<MessageViewFeat />
+			</Grid>
+			<Grid item xs={12}>
+				<FeedbackFeat />
+			</Grid>
+		</Grid>
+	);
+}
 
 export function HomePage() {
 	return (
-		<div>
-			<p>Home page works</p>
-			<table>
-				<thead>
-					<tr>
-						<th colSpan={16}>
-							<NavbarFeat />
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td colSpan={2}>
-							<div>
-								<SearchMailFeat />
-								<br />
-								<SidebarFeat />
-							</div>
-						</td>
-						<td colSpan={14}>
-							<MessageViewFeat />
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+		<Container maxWidth="xl">
+			<HomeGrid />
+		</Container>
 	);
 }

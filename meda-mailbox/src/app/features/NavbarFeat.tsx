@@ -5,12 +5,19 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { ButtonComp } from "../components/ButtonComp";
 import { MailboxInterface } from "../common/interfaces/";
+import { MUIButtonCompInterface } from "../common/interfaces/component.interface";
 import { fetchAllMessagesThunk } from "../common/store/thunks/mailboxThunk";
 // =========================================================================
 
 let total: number;
 let unread: number;
 let dispatch: Dispatch<any>;
+
+const muiButtonProps: MUIButtonCompInterface = {
+	size: 'large',
+	color: 'primary',
+	variant: 'contained',
+}
 
 export function NavbarFeat() {
 	dispatch = useDispatch();
@@ -24,8 +31,11 @@ export function NavbarFeat() {
 	return (
 		<div>
 			<p> Hi V. </p>
-			<p> {`You have ${ unread } unread messages out of ${ total } messages.`} </p>
-			<ButtonComp text="View Messages" />
+			<p> {`You have ${unread} unread messages out of ${total} messages.`} </p>
+			<ButtonComp 
+				text="View Messages"
+				mui={ muiButtonProps }
+				/>
 		</div>
 	);
 }
