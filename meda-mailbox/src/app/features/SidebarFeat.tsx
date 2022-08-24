@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import { MailboxInterface, MUIButtonCompInterface } from "../common/interfaces";
 import { fetchSpecificMessageThunk } from "../common/store/thunks/mailboxThunk";
+import { SearchMailFeat } from "./SearchMailFeat";
 // ===================================================================
 
 let messages: any[];
@@ -34,6 +35,8 @@ export function SidebarFeat() {
 
 	return (
 		<div>
+			<SearchMailFeat />
+			
 			{messages.map((message, index) => {
 				return (
 					<div key={index}>
@@ -59,9 +62,9 @@ export function SidebarFeat() {
 
 			<hr />
 
-			<div style={{ height: 300, width: '100%' }}>
+			{/* <div style={{ height: 300, width: '100%' }}>
 				<DataGrid rows={rows} columns={columns} />
-			</div>
+			</div> */}
 		</div>
 	);
 }

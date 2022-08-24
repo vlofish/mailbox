@@ -25,8 +25,6 @@ const HomeGrid = () => {
 				<NavbarFeat />
 			</Grid>
 			<Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-				<SearchMailFeat />
-				<hr />
 				<SidebarFeat />
 			</Grid>
 			<Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
