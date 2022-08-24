@@ -5,9 +5,10 @@ import { ButtonCompInterface } from "../common/interfaces/component.interface";
 export function ButtonComp(props: ButtonCompInterface) {
   return (
     <Button
+      onClick={ props.handleClick }
+      size = { props.mui.size } 
       color = { props.mui.color }
-      variant = { props.mui.variant }
-      size = { props.mui.size } >
+      variant = { props.mui.variant }>
       { props.text }
     </Button>
   );
