@@ -1,44 +1,44 @@
 // =====================================================
+import { Dispatch } from "redux";
 import { useSelector } from "react-redux";
 import { ButtonComp } from "../components/ButtonComp";
 import { MailboxInterface } from "../common/interfaces";
-import { MUIButtonCompInterface } from "../common/interfaces";
+import { useMessageRemoval } from "../common/hooks/mailbox.hook";
+import { MUI_ERROR_BUTTON } from "../common/constants/button.constant";
 // =====================================================
 
 
-const muiButtonProps: MUIButtonCompInterface = {
-	size: 'small',
-	color: 'error',
-	variant: 'outlined',
-}
+let removeMessageDispatch: (messageID: string) => Dispatch<any>;
+
+const handleRemovalOfSpecificMessage = (messageID: string) => removeMessageDispatch(messageID);
 
 export function MessageViewFeat() {
-	const message = useSelector((state: MailboxInterface) => state.message);
+	[, removeMessageDispatch] = useMessageRemoval();
+	const message = useSelector((state: MailboxInterface) => {
+		return state.message;
+	});
 
 	return (
 		<div>
 			<div>
-				<ButtonComp 
-					text="X"
-					mui={ muiButtonProps }
-					/>
 				<div>From: {message.from}</div>
 				<div>Subject: {message.subject}</div>
 			</div>
 			<p>
 				{message.message}
 			</p>
-			<ButtonComp 
+			<ButtonComp
 				text="Close"
-				mui={ muiButtonProps }
+				mui={MUI_ERROR_BUTTON}
 			/>
 			<ButtonComp
-				text="Delete"
-				mui={muiButtonProps}
+				text='Delete'
+				mui={MUI_ERROR_BUTTON}
+				handleClick={() => handleRemovalOfSpecificMessage(message.id)}
 			/>
 			<ButtonComp
 				text="Mark as Read"
-				mui={muiButtonProps}
+				mui={MUI_ERROR_BUTTON}
 			/>
 		</div>
 	);
