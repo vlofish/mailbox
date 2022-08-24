@@ -21,18 +21,18 @@ const mailboxReducers = {
   },
   // TODO: validate the below comment
   // According to redux docs this usese irm or something like that that allows to work immutable with mutable logic :P
-  remove: (state: any, { payload }: any) => {
-    const total = payload.length;
-    const unread = getNumberOfUnread(payload);
+  remove: (state: any, { payload }: { payload: { notRemovedMessages: any, clearCurrentMessage: boolean } }) => {
+    const total = payload.notRemovedMessages.length;
+    const unread = getNumberOfUnread(payload.notRemovedMessages);
 
     return {
       ...state,
       total,
       unread,
-      messages: payload,
+      message: payload.clearCurrentMessage ? {} : {...state.message},
+      messages: payload.notRemovedMessages,
     }
   },
-
   // TODO: fetch gets the specific selected message
   fetch: (state: any, { payload }: any) => {
     return {
