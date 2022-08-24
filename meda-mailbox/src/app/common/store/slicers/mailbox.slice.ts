@@ -1,12 +1,15 @@
 import { createSlice, CreateSliceOptions} from "@reduxjs/toolkit";
+import { MailboxMessagesInterface } from "../../interfaces";
 
 const mailboxInitialState = {
   total: 0,
   unread: 0,
   message: {},
   messages: [],
-  fetchingMessages: false,
+  fetchingMessages: false, // TODO: not sure still about how to set the flag fetching...
 }
+
+const getNumberOfUnread = (msgs: MailboxMessagesInterface[]) => msgs.filter(({ read }) => !read).length;
 
 const mailboxReducers = {
   // TODO: use the payload for the new state returned
@@ -16,15 +19,20 @@ const mailboxReducers = {
       unread: payload.unread
     }
   },
-  remove: (state: any, payload: any) => {
+  // TODO: validate the below comment
+  // According to redux docs this usese irm or something like that that allows to work immutable with mutable logic :P
+  remove: (state: any, { payload }: { payload: { notRemovedMessages: any, clearCurrentMessage: boolean } }) => {
+    const total = payload.notRemovedMessages.length;
+    const unread = getNumberOfUnread(payload.notRemovedMessages);
+
     return {
       ...state,
-      total: payload.total
+      total,
+      unread,
+      message: payload.clearCurrentMessage ? {} : {...state.message},
+      messages: payload.notRemovedMessages,
     }
   },
-
-  // TODO: not sure still about how to set the flag fetching...
-
   // TODO: fetch gets the specific selected message
   fetch: (state: any, { payload }: any) => {
     return {
@@ -35,7 +43,7 @@ const mailboxReducers = {
   // TODO: fetchAll gets all the messages for the sidebar preview
   fetchAll: (state: any, { payload }: any) => {
     const total = payload.length;
-    const unread = payload.filter((msg: {read: boolean}) => !msg.read).length;
+    const unread = getNumberOfUnread(payload);
     
     return {
       ...state,

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ButtonComp } from "../components/ButtonComp";
 import { MailboxInterface } from "../common/interfaces/";
 import { MUIButtonCompInterface } from "../common/interfaces/component.interface";
-import { fetchAllMessagesThunk } from "../common/store/thunks/mailboxThunk";
+import { fetchAllMessagesThunk } from "../common/store/thunks/mailbox.thunk";
 // =========================================================================
 
 let total: number;

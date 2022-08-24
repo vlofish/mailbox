@@ -1,16 +1,20 @@
 // ===================================================================
 import { Dispatch } from "redux";
-import { ButtonComp } from "../components/ButtonComp";
-import { useDispatch, useSelector } from "react-redux";
-import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
-import { MailboxInterface, MUIButtonCompInterface } from "../common/interfaces";
-import { fetchSpecificMessageThunk } from "../common/store/thunks/mailboxThunk";
+import { useSelector } from "react-redux";
 import { SearchMailFeat } from "./SearchMailFeat";
+import { ButtonComp } from "../components/ButtonComp";
+import { useMessageRemoval } from "../common/hooks/mailbox.hook";
+// import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
+import { fetchSpecificMessageThunk } from "../common/store/thunks/mailbox.thunk";
+import { MailboxInterface, MailboxMessagesInterface, MUIButtonCompInterface } from "../common/interfaces";
 // ===================================================================
 
 let messages: any[];
-let dispatch: Dispatch<any>;
-const handleDisplayOfSpecificMessage = (categoryID: string) => dispatch(fetchSpecificMessageThunk(categoryID));
+let mailboxDispatch: Dispatch<any>;
+let removeMessageDispatch: (messageID: string) => Dispatch<any>;
+
+const handleRemovalOfSpecificMessage = (messageID: string) => removeMessageDispatch(messageID);
+const handleDisplayOfSpecificMessage = (messageID:string, categoryID: string) => mailboxDispatch(fetchSpecificMessageThunk(messageID, categoryID));
 
 const muiButtonProps: MUIButtonCompInterface = {
 	size: 'small',
@@ -18,26 +22,26 @@ const muiButtonProps: MUIButtonCompInterface = {
 	variant: 'outlined',
 }
 
-const rows: GridRowsProp = [
-	{ id: 1, col1: 'Hello', col2: 'World' },
-	{ id: 2, col1: 'DataGridPro', col2: 'is Awesome' },
-	{ id: 3, col1: 'MUI', col2: 'is Amazing' },
-];
+// const rows: GridRowsProp = [
+// 	{ id: 1, col1: 'Hello', col2: 'World' },
+// 	{ id: 2, col1: 'DataGridPro', col2: 'is Awesome' },
+// 	{ id: 3, col1: 'MUI', col2: 'is Amazing' },
+// ];
 
-const columns: GridColDef[] = [
-	{ field: 'col1', headerName: 'Column 1', width: 150 },
-	{ field: 'col2', headerName: 'Column 2', width: 150 },
-];
+// const columns: GridColDef[] = [
+// 	{ field: 'col1', headerName: 'Column 1', width: 150 },
+// 	{ field: 'col2', headerName: 'Column 2', width: 150 },
+// ];
 
 export function SidebarFeat() {
-	dispatch = useDispatch();
 	messages = useSelector((state: MailboxInterface) => state.messages);
+	[mailboxDispatch, removeMessageDispatch] = useMessageRemoval();
 
 	return (
 		<div>
 			<SearchMailFeat />
 			
-			{messages.map((message, index) => {
+			{messages.map((message: MailboxMessagesInterface,index: number) => {
 				return (
 					<div key={index}>
 						<hr />
@@ -48,10 +52,13 @@ export function SidebarFeat() {
 						<ButtonComp 
 							text='Show Message'
 							mui={muiButtonProps}
-							handleClick={() => handleDisplayOfSpecificMessage(message.subject)} />
+							handleClick={() => handleDisplayOfSpecificMessage(message.id, message.subject)}
+							/>
 						<ButtonComp
 							text='Delete'
-							mui={muiButtonProps} />
+							mui={muiButtonProps} 
+							handleClick={ () => handleRemovalOfSpecificMessage(message.id) }
+							/>
 						<ButtonComp
 							text='Mark as Read' 
 							mui={muiButtonProps}/>

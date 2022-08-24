@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import mailboxReducer from './slicers/mailboxSlice';
-import { fetchAllMessagesThunk } from "./thunks/mailboxThunk";
+import mailboxReducer from './slicers/mailbox.slice';
+import { fetchAllMessagesThunk } from "./thunks/mailbox.thunk";
 
 export default configureStore({
   reducer: mailboxReducer,
