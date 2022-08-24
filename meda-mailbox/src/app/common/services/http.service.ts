@@ -1,6 +1,6 @@
 // ===========================================
 import { ajax } from 'rxjs/ajax';
-import { catchError } from 'rxjs/operators';
+import { catchError, delay } from 'rxjs/operators';
 import { throwError, Observable, of } from 'rxjs';
 // ===========================================
 
@@ -44,12 +44,14 @@ class HttpService {
   }
 
   /**
-   * This is just a placeholder.
-   * DO NOT USE THIS
-   * @returns 
+   * Uses RxJS `delay` for emulating network when called.
    */
-  delete(): Observable<any> {
-    return of({}).pipe(
+  delete(messageID: string): Observable<any> {
+    return of({
+      deletedID: messageID,
+      message: `Message ${messageID} sucessfully deleted from DB.`
+    }).pipe(
+      delay(2000),
       catchError(this.handleError)
     );
   }
