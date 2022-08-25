@@ -26,7 +26,7 @@ class HttpService {
    */
   post(messageID: string): Observable<any> {
     return this.get().pipe(
-      delay(1000),
+      delay(500),
       map(_ => this.genericMockedResponse(messageID)),
       catchError(this.genericMockedResponse)
     );
@@ -52,7 +52,7 @@ class HttpService {
       deletedID: messageID,
       message: `Message ${messageID} sucessfully deleted from DB.`
     }).pipe(
-      delay(2000),
+      delay(500),
       catchError(this.handleError)
     );
   }

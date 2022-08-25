@@ -8,7 +8,8 @@ export function ButtonComp(props: ButtonCompInterface) {
       onClick={ props.handleClick }
       size = { props.mui.size } 
       color = { props.mui.color }
-      variant = { props.mui.variant }>
+      variant = { props.mui.variant }
+      >
       { props.text }
     </Button>
   );
