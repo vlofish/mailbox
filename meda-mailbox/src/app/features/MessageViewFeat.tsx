@@ -1,10 +1,11 @@
 // =====================================================
 import { Dispatch } from "redux";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { ButtonComp } from "../components/ButtonComp";
 import { MailboxInterface } from "../common/interfaces";
-import { useMessageRemoval } from "../common/hooks/mailbox.hook";
 import { MUI_ERROR_BUTTON } from "../common/constants/button.constant";
+import { useMessageAsRead, useMessageRemoval } from "../common/hooks/mailbox.hook";
 // =====================================================
 
 
@@ -14,9 +15,17 @@ const handleRemovalOfSpecificMessage = (messageID: string) => removeMessageDispa
 
 export function MessageViewFeat() {
 	[, removeMessageDispatch] = useMessageRemoval();
+	const [, markMessageReadDispatch] = useMessageAsRead();
 	const message = useSelector((state: MailboxInterface) => {
 		return state.message;
 	});
+
+	/**
+	 * Each message displayed will be marked as read.
+	 */
+	useEffect(() => {
+		markMessageReadDispatch(message.id);
+	}, [message]);
 
 	return (
 		<div>
@@ -35,10 +44,6 @@ export function MessageViewFeat() {
 				text='Delete'
 				mui={MUI_ERROR_BUTTON}
 				handleClick={() => handleRemovalOfSpecificMessage(message.id)}
-			/>
-			<ButtonComp
-				text="Mark as Read"
-				mui={MUI_ERROR_BUTTON}
 			/>
 		</div>
 	);
