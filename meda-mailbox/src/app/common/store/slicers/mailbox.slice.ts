@@ -1,5 +1,5 @@
-import { createSlice, CreateSliceOptions} from "@reduxjs/toolkit";
 import { MailboxMessagesInterface } from "../../interfaces";
+import { createSlice, CreateSliceOptions} from "@reduxjs/toolkit";
 
 const mailboxInitialState = {
   total: 0,
@@ -9,21 +9,24 @@ const mailboxInitialState = {
   fetchingMessages: false, // TODO: not sure still about how to set the flag fetching...
 }
 
-const getNumberOfUnread = (msgs: MailboxMessagesInterface[]) => msgs.filter(({ read }) => !read).length;
+const getNumberOfUnreadMsgs = (msgs: MailboxMessagesInterface[]) => msgs.filter(({ read }) => !read).length;
 
 const mailboxReducers = {
-  // TODO: use the payload for the new state returned
-  read: (state: any, payload: any) => {
+  markAsRead: (state: any, { payload }: any) => {
+    const unread = getNumberOfUnreadMsgs(payload);
+
     return {
       ...state,
-      unread: payload.unread
+      unread,
+      messages: payload,
     }
   },
   // TODO: validate the below comment
+  // TODO: since the logic is held in the thunk maybe call this `removed` instead of `remove`.
   // According to redux docs this usese irm or something like that that allows to work immutable with mutable logic :P
   remove: (state: any, { payload }: { payload: { notRemovedMessages: any, clearCurrentMessage: boolean } }) => {
     const total = payload.notRemovedMessages.length;
-    const unread = getNumberOfUnread(payload.notRemovedMessages);
+    const unread = getNumberOfUnreadMsgs(payload.notRemovedMessages);
 
     return {
       ...state,
@@ -43,7 +46,7 @@ const mailboxReducers = {
   // TODO: fetchAll gets all the messages for the sidebar preview
   fetchAll: (state: any, { payload }: any) => {
     const total = payload.length;
-    const unread = getNumberOfUnread(payload);
+    const unread = getNumberOfUnreadMsgs(payload);
     
     return {
       ...state,
@@ -61,5 +64,5 @@ const mailboxSliceOptions: CreateSliceOptions = {
 }
 
 export const mailboxSlice = createSlice(mailboxSliceOptions);
-export const { read, remove, fetch, fetchAll } = mailboxSlice.actions;
+export const { markAsRead, remove, fetch, fetchAll } = mailboxSlice.actions;
 export default mailboxSlice.reducer;
