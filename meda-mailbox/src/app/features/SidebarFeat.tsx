@@ -3,11 +3,11 @@ import { Dispatch } from "redux";
 import { useSelector } from "react-redux";
 import { SearchMailFeat } from "./SearchMailFeat";
 import { ButtonComp } from "../components/ButtonComp";
-import { useMessageAsRead, useMessageRemoval } from "../common/hooks/mailbox.hook";
+import { MUI_ERROR_BUTTON, MUI_INFO_BUTTON } from "../common/constants/button.constant";
 // import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import { fetchSpecificMessageThunk } from "../common/store/thunks/mailbox.thunk";
+import { useMessageAsRead, useMessageRemoval } from "../common/hooks/mailbox.hook";
 import { MailboxInterface, MailboxMessagesInterface, MUIButtonCompInterface } from "../common/interfaces";
-
 // ===================================================================
 
 let messages: any[];
@@ -18,12 +18,6 @@ let markMessageReadDispatch: (messageID: string) => Dispatch<any>;
 const handleMarkMessageAsRead = (messageID: string) => markMessageReadDispatch(messageID);
 const handleRemovalOfSpecificMessage = (messageID: string) => removeMessageDispatch(messageID);
 const handleDisplayOfSpecificMessage = (messageID:string, categoryID: string) => mailboxDispatch(fetchSpecificMessageThunk(messageID, categoryID));
-
-const muiButtonProps: MUIButtonCompInterface = {
-	size: 'small',
-	color: 'error',
-	variant: 'outlined',
-}
 
 // const rows: GridRowsProp = [
 // 	{ id: 1, col1: 'Hello', col2: 'World' },
@@ -56,17 +50,17 @@ export function SidebarFeat() {
 						<br />
 						<ButtonComp 
 							text='Show Message'
-							mui={muiButtonProps}
+							mui={MUI_INFO_BUTTON}
 							handleClick={() => handleDisplayOfSpecificMessage(message.id, message.subject)}
 							/>
 						<ButtonComp
 							text='Delete'
-							mui={muiButtonProps} 
+							mui={MUI_ERROR_BUTTON} 
 							handleClick={ () => handleRemovalOfSpecificMessage(message.id) }
 							/>
 						<ButtonComp
 							text='Mark as Read' 
-							mui={muiButtonProps}
+							mui={MUI_INFO_BUTTON}
 							handleClick={() => handleMarkMessageAsRead(message.id) }
 							/>
 						<hr />
