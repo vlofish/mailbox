@@ -24,6 +24,7 @@ class MailboxService {
         map((res: any) => {
           // TODO: built a utility for building the messages based on the category
           // TODO: the utility could continue calling http if the category has API info pending to be gotten.
+          // TODO: create interface?
           const message = `Look for ${ res.name }. ${ res.gender === 'male' ? ' He is' : ' She is'} ${ res.height } cms. tall.`
           return {
             message,
@@ -60,22 +61,24 @@ class MailboxService {
       );
   }
 
-  // TODO: handle the existing object for marking a message as read
-  // TODO: this might not even be needed here after all
-  // TODO: this might be replaced by a store handling instead
-  // TODO: although we could emulate the BE call for this....
-  readMessage(): Observable<any> {
-    return httpSvc.post()
+  /**
+   * 
+   * @param messageID 
+   * @returns 
+   */
+  markMessageAsRead(messageID: string): Observable<any> {
+    return httpSvc.post(messageID)
       .pipe(
         first(),
         map((res: any) => res), // placeholder for data handling
       );
   }
 
-  // TODO: handle the existing object for marking a message as read
-  // TODO: this might not even be needed here after all
-  // TODO: this might be replaced by a store handling instead
-  // TODO: although we could emulate the BE call for this....
+  /**
+   * 
+   * @param messageID 
+   * @returns 
+   */
   deleteMessage(messageID: string): Observable<string> {
     if (!messageID) return of(`ID not provided, provide ID for deleting.`);
 
