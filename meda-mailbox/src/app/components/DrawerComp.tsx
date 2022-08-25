@@ -33,7 +33,7 @@ export default function DrawerComp(props: any) {
     <div>
       <Fragment key={anchor}>
         <Button onClick={toggleDrawer(anchor, true)}>
-          Feedback
+          Your FEEDBACK is Important to Us.
         </Button>
         <Drawer
           anchor={anchor}

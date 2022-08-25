@@ -1,10 +1,9 @@
 // ===========================================
 import { ajax } from 'rxjs/ajax';
-import { catchError, delay } from 'rxjs/operators';
+import { catchError, delay, map } from 'rxjs/operators';
 import { throwError, Observable, of } from 'rxjs';
 // ===========================================
 
-// TODO: decorator for making this singleton
 class HttpService {
   private domain = 'https://swapi.dev/api/';
 
@@ -22,13 +21,14 @@ class HttpService {
   }
 
   /**
-   * This is just a placeholder.
-   * DO NOT USE THIS
-   * @returns 
+   * Placeholder for agnostic HTTP post implementation.
+   * Uses RxJS `delay` for emulating network when called.
    */
-  post(): Observable<any> {
-    return of({}).pipe(
-      catchError(this.handleError)
+  post(messageID: string): Observable<any> {
+    return this.get().pipe(
+      delay(1000),
+      map(_ => this.genericMockedResponse(messageID)),
+      catchError(this.genericMockedResponse)
     );
   }
 
@@ -44,6 +44,7 @@ class HttpService {
   }
 
   /**
+   * Placeholder for agnostic HTTP delete implementation.
    * Uses RxJS `delay` for emulating network when called.
    */
   delete(messageID: string): Observable<any> {
@@ -71,6 +72,13 @@ class HttpService {
     }
 
     return throwError(() => new Error('There was an err connecting with the servers'));
+  }
+
+  private genericMockedResponse(messageID: string): any {
+    return {
+      messageID,
+      response: `Message ${messageID} connected with rebel base.`,
+    };
   }
 }
 

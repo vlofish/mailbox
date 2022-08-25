@@ -1,17 +1,17 @@
 // =======================================================
 import { Dispatch } from "@reduxjs/toolkit";
 import mailboxSvc from "../../services/mailbox.service";
-import { fetch, fetchAll, remove } from "../slicers/mailbox.slice";
+import { fetch, fetchAll, markAsRead, remove } from "../slicers/mailbox.slice";
 // =======================================================
 
 // TODO: add debouncer from lodash or rxjs for protecting against many calls
 // TODO: add err scenario
-export const fetchAllMessagesThunk = () => 
+export const fetchAllMessagesThunk = () =>
   (dispatch: Dispatch) => {
     mailboxSvc.getMessages()
       .subscribe(
         (res: any) => dispatch(fetchAll(res))
-      ) 
+      )
   }
 
 
@@ -28,19 +28,44 @@ export const fetchSpecificMessageThunk = (messageID: string, categoryID: string)
   }
 
 
-export const removeSpecificMessageThunk = (messageID: string) => 
+export const removeSpecificMessageThunk = (messageID: string) =>
   (dispatch: Dispatch, getState: Function) => {
     mailboxSvc.deleteMessage(messageID)
       .subscribe(
         () => {
           const clearCurrentMessage = getState().message.id === messageID; // Clear message from view box
-          const notRemovedMessages = [...getState().messages.filter((msg: { id: string}) => msg.id !== messageID)];
+          const notRemovedMessages = [...getState().messages.filter((msg: { id: string }) => msg.id !== messageID)];
           const payload = {
             notRemovedMessages,
             clearCurrentMessage,
           }
-          
+
           dispatch(remove(payload));
+        }
+      )
+  }
+
+/**
+ * Thunk for marking a message as read; calls API then updates store.
+ * Changes the index of the array where the message that was read is located.
+ * The prop telling whether the message is read or not is; `read`.
+ * 
+ * @param messageID The message to be marked as read
+ */
+export const markMessageAsReadThunk = (messageID: string) =>
+  (dispatch: Dispatch, getState: Function) => {
+    mailboxSvc.markMessageAsRead(messageID)
+      .subscribe(
+        () => {
+          const messages = [...getState().messages];
+          const indexOfReadMsg = messages.findIndex((msg: { id: string}) => msg.id === messageID);
+
+          messages[indexOfReadMsg] = {
+            ...messages[indexOfReadMsg],
+            read: true,
+          }
+
+          dispatch(markAsRead(messages));
         }
       )
   }
