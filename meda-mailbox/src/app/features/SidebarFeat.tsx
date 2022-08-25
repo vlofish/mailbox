@@ -1,78 +1,119 @@
 // ===================================================================
 import { Dispatch } from "redux";
+import { useEffect } from "react";
+import Box from '@mui/material/Box';
+import { Grid } from "@mui/material";
 import { useSelector } from "react-redux";
-import { SearchMailFeat } from "./SearchMailFeat";
 import { ButtonComp } from "../components/ButtonComp";
-import { MUI_ERROR_BUTTON, MUI_INFO_BUTTON } from "../common/constants/button.constant";
-// import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import { fetchSpecificMessageThunk } from "../common/store/thunks/mailbox.thunk";
+import { MailboxInterface, MailboxMessagesInterface } from "../common/interfaces";
 import { useMessageAsRead, useMessageRemoval } from "../common/hooks/mailbox.hook";
-import { MailboxInterface, MailboxMessagesInterface, MUIButtonCompInterface } from "../common/interfaces";
+import { MUI_ERROR_BUTTON, MUI_PRIMARY_BUTTON, MUI_SECONDARY_BUTTON } from "../common/constants/button.constant";
 // ===================================================================
 
 let messages: any[];
+let clickedRow: any;
+// let tableRows: MailboxMessagesInterface[] = [
+let tableRows: GridRowsProp = [
+	{ id: 'dummy1', subject: '', preview: '', read: false },
+]; // TODO: should i overwrite `messages` by this prop?
 let mailboxDispatch: Dispatch<any>;
 let removeMessageDispatch: (messageID: string) => Dispatch<any>;
 let markMessageReadDispatch: (messageID: string) => Dispatch<any>;
 
+
+const tableColumns: GridColDef[] = [
+	{ field: 'subject', headerName: 'Subject', width: 150 },
+	{ field: 'preview', headerName: 'Preview', width: 250 },
+];
+const handleTableRowClick = (row: GridRowsProp) => clickedRow = row;
 const handleMarkMessageAsRead = (messageID: string) => markMessageReadDispatch(messageID);
 const handleRemovalOfSpecificMessage = (messageID: string) => removeMessageDispatch(messageID);
-const handleDisplayOfSpecificMessage = (messageID:string, categoryID: string) => mailboxDispatch(fetchSpecificMessageThunk(messageID, categoryID));
+const handleDisplayOfSpecificMessage = (messageID: string, categoryID: string) => mailboxDispatch(fetchSpecificMessageThunk(messageID, categoryID));
+const handleMessagesChange = (messages: any) => tableRows = messages.map((message: MailboxMessagesInterface, index: number) => ({ ...message, index }));
 
-// const rows: GridRowsProp = [
-// 	{ id: 1, col1: 'Hello', col2: 'World' },
-// 	{ id: 2, col1: 'DataGridPro', col2: 'is Awesome' },
-// 	{ id: 3, col1: 'MUI', col2: 'is Amazing' },
-// ];
 
-// const columns: GridColDef[] = [
-// 	{ field: 'col1', headerName: 'Column 1', width: 150 },
-// 	{ field: 'col2', headerName: 'Column 2', width: 150 },
-// ];
-
-export function SidebarFeat() {
-	[, markMessageReadDispatch] = useMessageAsRead();
-	[mailboxDispatch, removeMessageDispatch] = useMessageRemoval();
-
-	messages = useSelector((state: MailboxInterface) => state.messages);
+// TODO: send the single message obj; for now performance is impacted with big data sets
+function MessageActionButtonsComp(props: { messages: any }) {
+	const messageID = props.messages[clickedRow?.index]?.id;
+	const isMessageRead = props.messages[clickedRow?.index]?.read;
+	const messageSubject = props.messages[clickedRow?.index]?.subject;
 
 	return (
-		<div>
-			<SearchMailFeat />
-			
-			{messages.map((message: MailboxMessagesInterface, index: number) => {
-				return (
-					<div key={index} style={ { backgroundColor: message.read ? 'white' : 'yellow' } }>
-						<hr />
-						Subject: {message.subject}
-						<br />
-						Preview: {message.preview}
-						<br />
-						<ButtonComp 
-							text='Show Message'
-							mui={MUI_INFO_BUTTON}
-							handleClick={() => handleDisplayOfSpecificMessage(message.id, message.subject)}
-							/>
-						<ButtonComp
-							text='Delete'
-							mui={MUI_ERROR_BUTTON} 
-							handleClick={ () => handleRemovalOfSpecificMessage(message.id) }
-							/>
-						<ButtonComp
-							text='Mark as Read' 
-							mui={MUI_INFO_BUTTON}
-							handleClick={() => handleMarkMessageAsRead(message.id) }
-							/>
-						<hr />
-					</div>
-				);
-			})}
+		<Grid container spacing={2}>
+			<Grid item xs={10}>
+				<Box>
+					<ButtonComp
+						text='Show Message'
+						mui={MUI_PRIMARY_BUTTON}
+						handleClick={() => handleDisplayOfSpecificMessage(messageID, messageSubject)}
+					/>
+					<ButtonComp
+						text='Delete'
+						mui={MUI_ERROR_BUTTON}
+						handleClick={() => handleRemovalOfSpecificMessage(messageID)}
+					/>
+					<ButtonComp
+						text='Mark as Read'
+						mui={MUI_SECONDARY_BUTTON}
+						handleClick={() => handleMarkMessageAsRead(messageID)}
+					/>
+				</Box>
+			</Grid>
+			<Grid item xs={2}>
+				<Box sx={{ p: 1, display: 'flex' }}>
+					<label>	Read </label>
+					<FiberManualRecordIcon
+						fontSize="small"
+						sx={{
+							mr: 1,
+							color: isMessageRead ? '#4caf50' : '#d9182e',
+						}}
+					/>
+				</Box>
+			</Grid>
+		</Grid>
+	)
+}
 
-			<hr />
+function MessagesPanelFeat() {
 
-			{/* <div style={{ height: 300, width: '100%' }}>
-				<DataGrid rows={rows} columns={columns} />
-			</div> */}
-		</div>
+	[, markMessageReadDispatch] = useMessageAsRead();
+
+	[mailboxDispatch, removeMessageDispatch] = useMessageRemoval();
+
+	useEffect(() => {
+		handleMessagesChange(messages);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [messages]);
+
+	messages = useSelector((state: MailboxInterface) => {
+		return state.messages;
+	});
+
+	return (
+		<Box sx={{ height: 300, width: '100%' }}>
+			{
+				tableRows.length > 0
+					? <DataGrid
+						rows={tableRows}
+						columns={tableColumns}
+						onCellClick={(e) => handleTableRowClick(e.row)}
+						components={{
+							Footer: MessageActionButtonsComp,
+						}}
+						componentsProps={{
+							footer: { messages },
+						}}
+					/>
+					: <label> Loading...  </label>
+			}
+		</Box>
 	);
+}
+
+export function SidebarFeat() {
+	return <MessagesPanelFeat />;
 }
