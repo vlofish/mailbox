@@ -3,16 +3,19 @@ import { Dispatch } from "redux";
 import { useSelector } from "react-redux";
 import { SearchMailFeat } from "./SearchMailFeat";
 import { ButtonComp } from "../components/ButtonComp";
-import { useMessageRemoval } from "../common/hooks/mailbox.hook";
+import { useMessageAsRead, useMessageRemoval } from "../common/hooks/mailbox.hook";
 // import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import { fetchSpecificMessageThunk } from "../common/store/thunks/mailbox.thunk";
 import { MailboxInterface, MailboxMessagesInterface, MUIButtonCompInterface } from "../common/interfaces";
+
 // ===================================================================
 
 let messages: any[];
 let mailboxDispatch: Dispatch<any>;
 let removeMessageDispatch: (messageID: string) => Dispatch<any>;
+let markMessageReadDispatch: (messageID: string) => Dispatch<any>;
 
+const handleMarkMessageAsRead = (messageID: string) => markMessageReadDispatch(messageID);
 const handleRemovalOfSpecificMessage = (messageID: string) => removeMessageDispatch(messageID);
 const handleDisplayOfSpecificMessage = (messageID:string, categoryID: string) => mailboxDispatch(fetchSpecificMessageThunk(messageID, categoryID));
 
@@ -34,16 +37,18 @@ const muiButtonProps: MUIButtonCompInterface = {
 // ];
 
 export function SidebarFeat() {
-	messages = useSelector((state: MailboxInterface) => state.messages);
+	[, markMessageReadDispatch] = useMessageAsRead();
 	[mailboxDispatch, removeMessageDispatch] = useMessageRemoval();
+
+	messages = useSelector((state: MailboxInterface) => state.messages);
 
 	return (
 		<div>
 			<SearchMailFeat />
 			
-			{messages.map((message: MailboxMessagesInterface,index: number) => {
+			{messages.map((message: MailboxMessagesInterface, index: number) => {
 				return (
-					<div key={index}>
+					<div key={index} style={ { backgroundColor: message.read ? 'white' : 'yellow' } }>
 						<hr />
 						Subject: {message.subject}
 						<br />
@@ -61,7 +66,9 @@ export function SidebarFeat() {
 							/>
 						<ButtonComp
 							text='Mark as Read' 
-							mui={muiButtonProps}/>
+							mui={muiButtonProps}
+							handleClick={() => handleMarkMessageAsRead(message.id) }
+							/>
 						<hr />
 					</div>
 				);
