@@ -16,6 +16,7 @@ enum MUIButtonColorEnum {
 
 enum MUIButtonVariantEnum {
   OUTLINED = 'outlined',
+  CONTAINED= 'contained',
 }
 
 export const MUI_PRIMARY_BUTTON: MUIButtonCompInterface = {
@@ -52,5 +53,5 @@ export const MUI_INFO_BUTTON: MUIButtonCompInterface = {
 export const MUI_WARNING_BUTTON: MUIButtonCompInterface = {
   size: MUIButtonSizeEnum.SMALL,
   color: MUIButtonColorEnum.WARNING,
-  variant: MUIButtonVariantEnum.OUTLINED,
+  variant: MUIButtonVariantEnum.CONTAINED,
 }

@@ -2,10 +2,11 @@
 import { Dispatch } from "redux";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { ButtonComp } from "../components/ButtonComp";
 import { MailboxInterface } from "../common/interfaces";
-import { MUI_ERROR_BUTTON } from "../common/constants/button.constant";
+import { MessageViewComp } from "../components/message-view/MessageViewComp";
+import { MessageActionsComp } from "../components/message-view/MessageActionsComp";
 import { useMessageAsRead, useMessageRemoval } from "../common/hooks/mailbox.hook";
+import { MUI_ERROR_BUTTON, MUI_WARNING_BUTTON } from "../common/constants/button.constant";
 // =====================================================
 
 
@@ -15,10 +16,10 @@ const handleRemovalOfSpecificMessage = (messageID: string) => removeMessageDispa
 
 export function MessageViewFeat() {
 	[, removeMessageDispatch] = useMessageRemoval();
+
 	const [, markMessageReadDispatch] = useMessageAsRead();
-	const message = useSelector((state: MailboxInterface) => {
-		return state.message;
-	});
+
+	const message = useSelector((state: MailboxInterface) => state.message);
 
 	/**
 	 * Each message displayed will be marked as read.
@@ -27,24 +28,29 @@ export function MessageViewFeat() {
 		markMessageReadDispatch(message.id);
 	}, [message]);
 
+	const messageActions = [
+		{
+			text: 'Close',
+			muiType: MUI_WARNING_BUTTON,
+			handleClick: () => { window.alert('Unimplemented') }
+		},
+		{
+			text: 'Delete',
+			muiType: MUI_ERROR_BUTTON,
+			handleClick: () => { handleRemovalOfSpecificMessage(message.id) }
+		}
+	]
+
 	return (
-		<div>
-			<div>
-				<div>From: {message.from}</div>
-				<div>Subject: {message.subject}</div>
-			</div>
-			<p>
-				{message.message}
-			</p>
-			<ButtonComp
-				text="Close"
-				mui={MUI_ERROR_BUTTON}
-			/>
-			<ButtonComp
-				text='Delete'
-				mui={MUI_ERROR_BUTTON}
-				handleClick={() => handleRemovalOfSpecificMessage(message.id)}
-			/>
-		</div>
+		<>
+			{
+				message?.message
+					?
+					<MessageViewComp info={{ ...message }}>
+						<MessageActionsComp actions={messageActions} />
+					</MessageViewComp>
+					:	<></>
+			}
+		</>
 	);
 }

@@ -94,7 +94,7 @@ function MessagesPanelFeat() {
 	});
 
 	return (
-		<Box sx={{ height: 300, width: '100%' }}>
+		<Box sx={{ height: 270, width: '100%' }}>
 			{
 				tableRows.length > 0
 					? <DataGrid
