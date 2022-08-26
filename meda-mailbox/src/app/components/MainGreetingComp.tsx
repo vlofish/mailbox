@@ -25,11 +25,11 @@ export function MainGreetingComp() {
 
   return (
     <Box>
-      {/* <p> Hi Rebel </p> */}
       <label> {`You have ${unread} unread(s) out of ${total} messages.`} </label>
       <ButtonComp
         text="View Messages"
         mui={MUI_WARNING_BUTTON}
+        handleClick={() => window.alert('Unimplemented') }
       />
     </Box>
   );
