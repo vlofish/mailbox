@@ -30,15 +30,14 @@ const handleTextareaChange = (text: string) => { comment = text };
 const handleRadioGroupChange = (optionChosen: string) => { feeling = optionChosen };
 
 onValue(comments, (snapshot) => {
-  let counter = 1;
   const data = snapshot.val();
   if (data) {
     for (let key in data) {
-      console.log(`========== Comment ${counter} ==========`);
+      console.log(`========== Comment ==========`);
       console.log(`Message: ${data[key].message}`);
       console.log(`Feeling: ${data[key].feeling}`);
       console.log(`========== ========== ========== \n\n`);
-      counter++;
+
     }
   }
 });
