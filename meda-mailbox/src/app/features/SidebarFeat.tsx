@@ -10,7 +10,7 @@ import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import { fetchSpecificMessageThunk } from "../common/store/thunks/mailbox.thunk";
 import { MailboxInterface, MailboxMessagesInterface } from "../common/interfaces";
 import { useMessageAsRead, useMessageRemoval } from "../common/hooks/mailbox.hook";
-import { MUI_ERROR_BUTTON, MUI_PRIMARY_BUTTON, MUI_SECONDARY_BUTTON } from "../common/constants/button.constant";
+import { MUI_ERROR_BUTTON, MUI_PRIMARY_BUTTON, MUI_SECONDARY_BUTTON, MUI_SUCCESS_BUTTON } from "../common/constants/button.constant";
 import { clearMsgFromView } from "../common/store/slicers/mailbox.slice";
 // ===================================================================
 
@@ -48,17 +48,17 @@ function MessageActionButtonsComp(props: { messages: any }) {
 	return (
 		<Grid container spacing={2}>
 			<Grid item xs={8}>
-				<Box>
+				<Box sx={{ p: 2, display: 'flex' }}>
 					<ButtonComp
 						text='Show Msg'
-						mui={MUI_PRIMARY_BUTTON}
+						mui={MUI_SUCCESS_BUTTON}
 						handleClick={() => handleDisplayOfSpecificMessage(messageID, messageSubject)}
-					/>
+					/> &nbsp;
 					<ButtonComp
 						text='Delete'
 						mui={MUI_ERROR_BUTTON}
 						handleClick={() => handleRemovalOfSpecificMessage(messageID)}
-					/>
+					/> &nbsp;
 					<ButtonComp
 						text='Mark Read'
 						mui={MUI_SECONDARY_BUTTON}
@@ -67,12 +67,11 @@ function MessageActionButtonsComp(props: { messages: any }) {
 				</Box>
 			</Grid>
 			<Grid item xs={4}>
-				<Box sx={{ p: 1, display: 'flex' }}>
-					<label>	Read </label>
+				<Box sx={{ p: 2, display: 'flex' }}>
+					<label> <strong> Read </strong> </label>
 					<FiberManualRecordIcon
-						fontSize="small"
+						fontSize="medium"
 						sx={{
-							mr: 1,
 							color: isMessageRead ? '#4caf50' : '#d9182e',
 						}}
 					/>
@@ -98,7 +97,7 @@ function MessagesPanelFeat() {
 	});
 
 	return (
-		<Box sx={{ height: 270, width: '100%' }}>
+		<Box sx={{ height: '50vh', width: '100%' }}>
 			{
 				tableRows.length > 0
 					? <DataGrid
