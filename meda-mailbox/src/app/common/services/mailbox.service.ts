@@ -22,14 +22,12 @@ class MailboxService {
       .pipe(
         first(),
         map((res: any) => {
-          // TODO: built a utility for building the messages based on the category
-          // TODO: the utility could continue calling http if the category has API info pending to be gotten.
-          // TODO: create interface?
-          const message = `Look for ${ res.name }. ${ res.gender === 'male' ? ' He is' : ' She is'} ${ res.height } cms. tall.`
+          const message = this.dummyMsgGenerator(categoryID, res);
+
           return {
             message,
             id: messageID,
-            from: '52.58.110.120:443',
+            from: 'From: Rebel Base',
             subject: categoryID,
           };
         }),
@@ -87,6 +85,39 @@ class MailboxService {
         first(),
         map((res: any) => res), // placeholder for data handling
       );
+  }
+
+  private dummyMsgGenerator(category: string, res: any): string {
+    let message: string = '';
+    
+    switch(category) {
+      case 'people':
+        if (res.gender === 'n/a') res.gender = `it's`;
+        if (res.gender === 'male') res.gender = `he's`;
+        if (res.gender === 'female') res.gender = `she's`;
+
+        message = `Look for ${ res.name }. ${ res.gender } ${ res.height } cms.tall.`
+      break;
+      case 'planets':
+        message = `Go to ${res.name}. Get ready for ${res.terrain}.`
+        break;
+        case 'films':
+        message = `${res.opening_crawl}.`
+        break;
+      case 'species':
+        message = `Look for ${res.name}. You'll have to learn to speak ${res.language}`
+        break;
+      case 'vehicles':
+        message = `Drive the ${res.name}. You'll need ${res.cost_in_credits} to buy one.`
+        break;
+      case 'starships':
+        message = `Destroy the ${res.name}.`
+        break;
+      default:
+        message = `There was an err getting your message.`
+    }
+
+    return message;
   }
 }
 

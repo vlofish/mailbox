@@ -22,19 +22,19 @@ enum MUIButtonVariantEnum {
 export const MUI_PRIMARY_BUTTON: MUIButtonCompInterface = {
   size: MUIButtonSizeEnum.SMALL,
   color: MUIButtonColorEnum.PRIMARY,
-  variant: MUIButtonVariantEnum.OUTLINED,
+  variant: MUIButtonVariantEnum.CONTAINED,
 }
 
 export const MUI_SECONDARY_BUTTON: MUIButtonCompInterface = {
   size: MUIButtonSizeEnum.SMALL,
   color: MUIButtonColorEnum.SECONDARY,
-  variant: MUIButtonVariantEnum.OUTLINED,
+  variant: MUIButtonVariantEnum.CONTAINED,
 }
 
 export const MUI_SUCCESS_BUTTON: MUIButtonCompInterface = {
   size: MUIButtonSizeEnum.SMALL,
   color: MUIButtonColorEnum.SUCCESS,
-  variant: MUIButtonVariantEnum.OUTLINED,
+  variant: MUIButtonVariantEnum.CONTAINED,
 }
 
 export const MUI_ERROR_BUTTON: MUIButtonCompInterface = {

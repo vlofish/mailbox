@@ -10,7 +10,8 @@ import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import { fetchSpecificMessageThunk } from "../common/store/thunks/mailbox.thunk";
 import { MailboxInterface, MailboxMessagesInterface } from "../common/interfaces";
 import { useMessageAsRead, useMessageRemoval } from "../common/hooks/mailbox.hook";
-import { MUI_ERROR_BUTTON, MUI_PRIMARY_BUTTON, MUI_SECONDARY_BUTTON } from "../common/constants/button.constant";
+import { MUI_ERROR_BUTTON, MUI_PRIMARY_BUTTON, MUI_SECONDARY_BUTTON, MUI_SUCCESS_BUTTON } from "../common/constants/button.constant";
+import { clearMsgFromView } from "../common/store/slicers/mailbox.slice";
 // ===================================================================
 
 let messages: any[];
@@ -25,10 +26,13 @@ let markMessageReadDispatch: (messageID: string) => Dispatch<any>;
 
 
 const tableColumns: GridColDef[] = [
-	{ field: 'subject', headerName: 'Subject', width: 150 },
+	{ field: 'subject', headerName: 'Mission', width: 150 },
 	{ field: 'preview', headerName: 'Preview', width: 250 },
 ];
-const handleTableRowClick = (row: GridRowsProp) => clickedRow = row;
+const handleTableRowClick = (row: GridRowsProp) => {
+	clickedRow = row
+	mailboxDispatch(clearMsgFromView(null));
+};
 const handleMarkMessageAsRead = (messageID: string) => markMessageReadDispatch(messageID);
 const handleRemovalOfSpecificMessage = (messageID: string) => removeMessageDispatch(messageID);
 const handleDisplayOfSpecificMessage = (messageID: string, categoryID: string) => mailboxDispatch(fetchSpecificMessageThunk(messageID, categoryID));
@@ -43,32 +47,31 @@ function MessageActionButtonsComp(props: { messages: any }) {
 
 	return (
 		<Grid container spacing={2}>
-			<Grid item xs={10}>
-				<Box>
+			<Grid item xs={8}>
+				<Box sx={{ p: 2, display: 'flex' }}>
 					<ButtonComp
-						text='Show Message'
-						mui={MUI_PRIMARY_BUTTON}
+						text='Show Msg'
+						mui={MUI_SUCCESS_BUTTON}
 						handleClick={() => handleDisplayOfSpecificMessage(messageID, messageSubject)}
-					/>
+					/> &nbsp;
 					<ButtonComp
 						text='Delete'
 						mui={MUI_ERROR_BUTTON}
 						handleClick={() => handleRemovalOfSpecificMessage(messageID)}
-					/>
+					/> &nbsp;
 					<ButtonComp
-						text='Mark as Read'
+						text='Mark Read'
 						mui={MUI_SECONDARY_BUTTON}
 						handleClick={() => handleMarkMessageAsRead(messageID)}
 					/>
 				</Box>
 			</Grid>
-			<Grid item xs={2}>
-				<Box sx={{ p: 1, display: 'flex' }}>
-					<label>	Read </label>
+			<Grid item xs={4}>
+				<Box sx={{ p: 2, display: 'flex' }}>
+					<label> <strong> Read </strong> </label>
 					<FiberManualRecordIcon
-						fontSize="small"
+						fontSize="medium"
 						sx={{
-							mr: 1,
 							color: isMessageRead ? '#4caf50' : '#d9182e',
 						}}
 					/>
@@ -94,7 +97,7 @@ function MessagesPanelFeat() {
 	});
 
 	return (
-		<Box sx={{ height: 270, width: '100%' }}>
+		<Box sx={{ height: '50vh', width: '100%' }}>
 			{
 				tableRows.length > 0
 					? <DataGrid

@@ -70,8 +70,8 @@ class HttpService {
     } else {
       console.error(`Backend returned code ${error.status}, body was: `, error.error);
     }
-
-    return throwError(() => new Error('There was an err connecting with the servers'));
+    window.alert('The Empire might be tracking you; the connection was lost. Try to go slower...');
+    return throwError(() => new Error('There was an err connecting with the rebel base.'));
   }
 
   private genericMockedResponse(messageID: string): any {
