@@ -1,7 +1,9 @@
 export function RadioboxGroupComp(props: any) {
-  return(
-    <div onChange={ props.handleChange }>
-      <label>Tell us how you felt using our mailbox?</label>
+  return (
+    <div onChange={props.handleChange}>
+      <p>
+        How did You Feel using the Mailbox?
+      </p>
       <div>
         <input type="radio" id="dissapointed" name="mailbox_feeling" value="dissapointed" />
         <label> Dissapointed </label>
