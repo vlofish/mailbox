@@ -11,7 +11,7 @@ import { MessageViewFeat } from "../features/MessageViewFeat";
 const HomeGrid = () => {
 	return (
 		<Grid container spacing={2}>
-			<Grid item xs={12}>
+			<Grid item xs={12} style={{ textAlign: "center" }}>
 				<NavbarFeat />
 			</Grid>
 			<Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
@@ -20,7 +20,7 @@ const HomeGrid = () => {
 			<Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
 				<MessageViewFeat />
 			</Grid>
-			<Grid item xs={12}>
+			<Grid item xs={12} style={{ textAlign: "center" }}>
 				<FeedbackFeat />
 			</Grid>
 		</Grid>

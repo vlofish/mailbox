@@ -4,7 +4,7 @@ import {
   onValue,
   child, push, update
 } from "firebase/database";
-import { Box, Divider } from "@mui/material";
+import { Box, Divider, Grid } from "@mui/material";
 import { ButtonComp } from "../components/ButtonComp";
 import { TextareaComp } from "../components/TextareaComp";
 import { db as FIRE_DB, dbName as DB_NAME } from "../app.config";
@@ -59,30 +59,34 @@ function postComment() {
 
 export function FeedbackComp() {
   return (
-    <>
-      <Box role="presentation">
-        <div> <p> Tell us about your experience </p> </div>
+    <Grid container spacing={2} style={{ textAlign: "center" }}>
+      <Grid item xs={12}>
+        <p> Tell Us About Your Experience </p>
         <Divider />
-        <div>
-          <RadioboxGroupComp
-            handleChange={(e: any) => handleRadioGroupChange(e.target.value)}
-          />
+      </Grid>
+      <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+        <RadioboxGroupComp
+          handleChange={(e: any) => handleRadioGroupChange(e.target.value)}
+        />
+      </Grid>
+      <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+        <TextareaComp
+          placeholder="Would you like to tell us more?"
+          handleChange={(e: any) => handleTextareaChange(e.target.value)}
+        />
+      </Grid>
 
-          <br />
-
-          <TextareaComp
-            title="Tell us why"
-            handleChange={(e: any) => handleTextareaChange(e.target.value)}
-          />
-
-          <br />
-
-          <ButtonComp
-            text="Post Comment"
-            mui={muiButtonProps}
-            handleClick={() => { postComment() }} />
-        </div>
-      </Box>
-    </>
+      <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+        <Divider />
+        <br />
+        <ButtonComp
+          text="Post Comment"
+          mui={muiButtonProps}
+          handleClick={() => { postComment() }} />
+        <br />
+        <small><i>open the terminal to read some of the user's comments :P</i></small>
+        <br />
+      </Grid>
+    </Grid>
   );
 }
