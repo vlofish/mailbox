@@ -21,9 +21,6 @@ const mailboxReducers = {
       messages: payload,
     }
   },
-  // TODO: validate the below comment
-  // TODO: since the logic is held in the thunk maybe call this `removed` instead of `remove`.
-  // According to redux docs this usese irm or something like that that allows to work immutable with mutable logic :P
   remove: (state: any, { payload }: { payload: { notRemovedMessages: any, clearCurrentMessage: boolean } }) => {
     const total = payload.notRemovedMessages.length;
     const unread = getNumberOfUnreadMsgs(payload.notRemovedMessages);
@@ -36,14 +33,12 @@ const mailboxReducers = {
       messages: payload.notRemovedMessages,
     }
   },
-  // TODO: fetch gets the specific selected message
   fetch: (state: any, { payload }: any) => {
     return {
       ...state,
       message: payload,
     }
   },
-  // TODO: fetchAll gets all the messages for the sidebar preview
   fetchAll: (state: any, { payload }: any) => {
     const total = payload.length;
     const unread = getNumberOfUnreadMsgs(payload);
@@ -55,6 +50,12 @@ const mailboxReducers = {
       messages: payload,
     }
   },
+  clearMsgFromView: (state: any) => {
+    return {
+      ...state,
+      message: {}
+    }
+  },
 }
 
 const mailboxSliceOptions: CreateSliceOptions = {
@@ -64,5 +65,5 @@ const mailboxSliceOptions: CreateSliceOptions = {
 }
 
 export const mailboxSlice = createSlice(mailboxSliceOptions);
-export const { markAsRead, remove, fetch, fetchAll } = mailboxSlice.actions;
+export const { markAsRead, remove, fetch, fetchAll, clearMsgFromView } = mailboxSlice.actions;
 export default mailboxSlice.reducer;

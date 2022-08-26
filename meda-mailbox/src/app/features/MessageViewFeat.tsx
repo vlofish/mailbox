@@ -7,15 +7,21 @@ import { MessageViewComp } from "../components/message-view/MessageViewComp";
 import { MessageActionsComp } from "../components/message-view/MessageActionsComp";
 import { useMessageAsRead, useMessageRemoval } from "../common/hooks/mailbox.hook";
 import { MUI_ERROR_BUTTON, MUI_WARNING_BUTTON } from "../common/constants/button.constant";
+import { fetchSpecificMessageThunk } from "../common/store/thunks/mailbox.thunk";
 // =====================================================
 
+
+let mailboxDispatch: Dispatch<any>;
 
 let removeMessageDispatch: (messageID: string) => Dispatch<any>;
 
 const handleRemovalOfSpecificMessage = (messageID: string) => removeMessageDispatch(messageID);
 
+const handleDisplayOfSpecificMessage = (messageID: string, categoryID: string) => mailboxDispatch(fetchSpecificMessageThunk(messageID, categoryID));
+
+
 export function MessageViewFeat() {
-	[, removeMessageDispatch] = useMessageRemoval();
+	[mailboxDispatch, removeMessageDispatch] = useMessageRemoval();
 
 	const [, markMessageReadDispatch] = useMessageAsRead();
 
@@ -30,9 +36,9 @@ export function MessageViewFeat() {
 
 	const messageActions = [
 		{
-			text: 'Close',
+			text: 'Nu Mission',
 			muiType: MUI_WARNING_BUTTON,
-			handleClick: () => { window.alert('Unimplemented') }
+			handleClick: () => { handleDisplayOfSpecificMessage(message.id, message.subject) }
 		},
 		{
 			text: 'Delete',
