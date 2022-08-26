@@ -7,15 +7,6 @@ import { SidebarFeat } from '../features/SidebarFeat';
 import { FeedbackFeat } from "../features/FeedbackFeat";
 import { MessageViewFeat } from "../features/MessageViewFeat";
 // =============================================================
-/* 
-const Item = styled(Paper)(({ theme }) => ({
-	backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-	...theme.typography.body2,
-	padding: theme.spacing(1),
-	textAlign: 'center',
-	color: theme.palette.text.secondary,
-}));
- */
 
 const HomeGrid = () => {
 	return (
@@ -23,10 +14,10 @@ const HomeGrid = () => {
 			<Grid item xs={12}>
 				<NavbarFeat />
 			</Grid>
-			<Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+			<Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
 				<SidebarFeat />
 			</Grid>
-			<Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+			<Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
 				<MessageViewFeat />
 			</Grid>
 			<Grid item xs={12}>
@@ -38,7 +29,7 @@ const HomeGrid = () => {
 
 export function HomePage() {
 	return (
-		<Container maxWidth="xl">
+		<Container maxWidth="md">
 			<HomeGrid />
 		</Container>
 	);
