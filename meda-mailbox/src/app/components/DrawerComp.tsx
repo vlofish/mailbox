@@ -4,7 +4,7 @@ import {
   Fragment, KeyboardEvent, MouseEvent
 } from 'react';
 import Drawer from '@mui/material/Drawer';
-import Button from '@mui/material/Button';
+import { Fab } from '@mui/material';
 // =======================================================
 
 type Anchor = 'bottom';
@@ -32,15 +32,17 @@ export default function DrawerComp(props: any) {
   return (
     <div>
       <Fragment key={anchor}>
-        <Button onClick={toggleDrawer(anchor, true)}>
-          Your FEEDBACK is Important to Us.
-        </Button>
+        <Fab variant="extended" onClick={toggleDrawer(anchor, true)}>
+          <label>
+            Your feedback is Important to Us.
+          </label>
+        </Fab>
         <Drawer
           anchor={anchor}
           open={state[anchor]}
           onClose={toggleDrawer(anchor, false)}
-          >
-          { props.children }
+        >
+          {props.children}
         </Drawer>
       </Fragment>
     </div>
