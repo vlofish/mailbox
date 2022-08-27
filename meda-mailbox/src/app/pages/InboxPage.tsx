@@ -1,8 +1,13 @@
 // =============================================================
 import '../common/common.css';
+
+import { Link } from 'react-router-dom';
+import { ButtonComp } from '../components/ButtonComp';
+import { MessageCounterFeat } from '../features/MessageCounterFeat';
+import { MUI_WARNING_BUTTON } from '../common/constants/button.constant';
+
 import Box from "@mui/material/Box/Box";
 import Grid from "@mui/material/Grid/Grid";
-import { GreetingFeat } from "../features/GreetingFeat";
 // =============================================================
 
 const boxStyle = {
@@ -19,7 +24,13 @@ function Inbox() {
     <Grid container spacing={2} className='text-align-center'>
       <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
         <Box className='full-vector-height-width' sx={boxStyle}>
-          <GreetingFeat />
+          <MessageCounterFeat />
+          <Link to='/home'>
+            <ButtonComp
+              text="View Messages"
+              mui={MUI_WARNING_BUTTON}
+            />
+          </Link>
         </Box>
       </Grid>
     </Grid>
