@@ -6,7 +6,7 @@ import {
 import { useDispatch } from "react-redux";
 // =========================================
 
-const useMailboxDispatch = () => useDispatch<any>();
+export const useMailboxDispatch = () => useDispatch<any>();
 
 /**
  * Called for removing specific messages from the mailbox
