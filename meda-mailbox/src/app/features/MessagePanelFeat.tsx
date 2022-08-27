@@ -81,7 +81,7 @@ function MessageActionButtonsComp(props: { messages: any }) {
 	)
 }
 
-function MessagesPanelFeat() {
+function MessagesPanel() {
 
 	[, markMessageReadDispatch] = useMessageAsRead();
 
@@ -117,6 +117,6 @@ function MessagesPanelFeat() {
 	);
 }
 
-export function SidebarFeat() {
-	return <MessagesPanelFeat />;
+export function MessagePanelFeat() {
+	return <MessagesPanel />;
 }
