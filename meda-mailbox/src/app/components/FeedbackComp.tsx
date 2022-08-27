@@ -4,7 +4,7 @@ import {
   onValue,
   child, push, update
 } from "firebase/database";
-import { Box, Divider, Grid } from "@mui/material";
+import { Divider, Grid } from "@mui/material";
 import { ButtonComp } from "../components/ButtonComp";
 import { TextareaComp } from "../components/TextareaComp";
 import { db as FIRE_DB, dbName as DB_NAME } from "../app.config";

@@ -11,7 +11,6 @@ import { fetchAllMessagesThunk } from "../common/store/thunks/mailbox.thunk";
 
 
 /**
- * What I do?
  * 1. Load messages auto on mount
  * 2. Display the number of messages to the user.
  */
@@ -22,7 +21,7 @@ export function MessageCounterFeat() {
 
   useEffect(() => {
     dispatch(fetchAllMessagesThunk());
-  }, [])
+  }, [dispatch])
 
   return (
     <Box>

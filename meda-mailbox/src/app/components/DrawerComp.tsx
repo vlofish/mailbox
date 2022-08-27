@@ -34,7 +34,7 @@ export default function DrawerComp(props: any) {
       <Fragment key={anchor}>
         <Fab variant="extended" onClick={toggleDrawer(anchor, true)}>
           <label>
-            Your feedback is Important to Us.
+            Contact us.
           </label>
         </Fab>
         <Drawer
