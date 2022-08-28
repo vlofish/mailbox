@@ -1,31 +1,23 @@
 // =============================================================
-import { Link } from 'react-router-dom';
+import { SearchMessageFeat } from './SearchMessageFeat';
 import { MessageCounterFeat } from './MessageCounterFeat';
 
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
+import { ToggleMailboxViewFeat } from './ToggleMailboxViewFeat';
 // =============================================================
 
+// TODO: this file most likely will become a page than a feature or a comp...
 
 const Navbar = () => (
 	<Box sx={{ flexGrow: 1 }}>
 		<AppBar position="static">
 			<Toolbar>
 
-				<div>
-					<MessageCounterFeat />
-					<nav
-						style={{
-							borderBottom: "solid 1px",
-							paddingBottom: "1rem",
-						}}
-					>
-						<Link to="splitview">Splitview</Link>
-						|{" "}
-						<Link to="singleview">Singleview</Link>
-					</nav>
-				</div>
+				<MessageCounterFeat />
+				<SearchMessageFeat />
+				<ToggleMailboxViewFeat />
 
 			</Toolbar>
 		</AppBar>
