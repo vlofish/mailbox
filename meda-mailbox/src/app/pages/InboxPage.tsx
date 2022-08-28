@@ -3,12 +3,12 @@ import { Outlet } from 'react-router-dom';
 import { FeedbackFeat } from '../features/FeedbackFeat';
 
 import Container from '@mui/material/Container';
-import NavbarFeat from '../features/NavbarFeat';
+import AppBarPage from './AppBarPage';
 // =============================================================
 
 const Home = () => (
   <Container maxWidth="md">
-    <NavbarFeat />
+    <AppBarPage />
     <Outlet />
     <FeedbackFeat />
   </Container>

@@ -25,7 +25,7 @@ export function MessageCounterFeat() {
   return (
     <Typography
       noWrap
-      variant="h6"
+      variant="subtitle1"
       component="div"
       sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
     >

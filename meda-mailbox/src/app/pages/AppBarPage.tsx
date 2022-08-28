@@ -1,17 +1,14 @@
 // =============================================================
-import { SearchMessageFeat } from './SearchMessageFeat';
-import { MessageCounterFeat } from './MessageCounterFeat';
-import { ToggleMailboxViewFeat } from './ToggleMailboxViewFeat';
+import { SearchMessageFeat } from '../features/SearchMessageFeat';
+import { MessageCounterFeat } from '../features/MessageCounterFeat';
+import { ToggleMailboxViewFeat } from '../features/ToggleMailboxViewFeat';
 
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 // =============================================================
 
-// TODO: this file most likely will become a page than a feature or a comp...
-// TODO: the above because there's no state habdling nor anything related.
-
-export default function NavbarFeat() {
+export default function AppBarPage() {
 	return (
 		<Box sx={{ flexGrow: 1 }}>
 			<AppBar position="static">
