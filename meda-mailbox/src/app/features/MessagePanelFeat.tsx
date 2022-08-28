@@ -3,8 +3,8 @@ import { Dispatch } from "redux";
 import { useEffect } from "react";
 import { Grid } from "@mui/material";
 import { useSelector } from "react-redux";
+import { MailboxViewEnum, PagePathEnum } from "../common/enums/";
 import { ButtonComp } from "../components/ButtonComp";
-import { PagePathEnum } from "../common/enums/page-paths.enum";
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import { fetchSpecificMessageThunk } from "../common/store/thunks/mailbox.thunk";
 import { MailboxInterface, MailboxMessagesInterface } from "../common/interfaces";
@@ -17,6 +17,8 @@ import {
 } from "../common/constants/button.constant";
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 // ===================================================================
+
+let currentView: any;
 
 let navigateToPath: any;
 let messages: any[];
@@ -39,7 +41,9 @@ const handleTableRowClick = (row: GridRowsProp) => {
 	// mailboxDispatch(clearMsgFromView(null));
 
 	// if view is single activate the below
-	// navigateToPath("/home/messageview", { replace: true });
+	if (currentView === MailboxViewEnum.PANEL) {
+		navigateToPath(PagePathEnum.INBOX_MESSAGE_VIEW)
+	}
 };
 const handleMarkMessageAsRead = (messageID: string) => markMessageReadDispatch(messageID);
 
@@ -53,11 +57,17 @@ const handleRemovalOfSpecificMessage = (messageID: string) => {
 
 const handleDisplayOfSpecificMessage = (messageID: string, categoryID: string) => {
 	mailboxDispatch(fetchSpecificMessageThunk(messageID, categoryID));
-	navigateToPath(PagePathEnum.INBOX_MESSAGE_VIEW)
+	// navigateToPath(PagePathEnum.INBOX_MESSAGE_VIEW)
 }
 
 const handleMessagesChange = (messages: any) => tableRows = messages.map((message: MailboxMessagesInterface, index: number) => ({ ...message, index }));
 
+// TODO: style this comp
+function NoActionsButtonsComp() {
+	return (<Box sx={{ p: 2, display: 'flex' }}>
+		Messages Panel
+	</Box>)
+}
 
 // TODO: send the single message obj; for now performance is impacted with big data sets
 function MessageActionButtonsComp(props: { messages: any }) {
@@ -101,7 +111,7 @@ function MessageActionButtonsComp(props: { messages: any }) {
 	)
 }
 
-function MessagesPanel() {
+function MessagePanel() {
 
 	[, navigateToPath] = useMailboxNavigateTo();
 
@@ -116,8 +126,8 @@ function MessagesPanel() {
 	}, [messages]);
 
 
-	messages = useSelector((state: MailboxInterface) => {
-		return state.messages;
+	[messages, currentView] = useSelector((state: MailboxInterface) => {
+		return [state.messages, state.currentView];
 	});
 
 	return (
@@ -128,8 +138,10 @@ function MessagesPanel() {
 						rows={tableRows}
 						columns={tableColumns}
 						onCellClick={(e) => handleTableRowClick(e.row)}
-						components={{
-							Footer: MessageActionButtonsComp,
+						components={{ 
+							Footer: currentView === MailboxViewEnum.SPLIT 
+								? MessageActionButtonsComp
+								: NoActionsButtonsComp
 						}}
 						componentsProps={{
 							footer: { messages },
@@ -142,5 +154,5 @@ function MessagesPanel() {
 }
 
 export function MessagePanelFeat() {
-	return <MessagesPanel />;
+	return <MessagePanel />;
 }

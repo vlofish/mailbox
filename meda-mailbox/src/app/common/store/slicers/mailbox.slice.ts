@@ -1,12 +1,16 @@
-import { MailboxMessagesInterface } from "../../interfaces";
+// ======================================================================
+import { MailboxViewEnum } from "../../enums";
 import { createSlice, CreateSliceOptions} from "@reduxjs/toolkit";
+import { MailboxInterface, MailboxMessagesInterface, MailboxViewType } from "../../interfaces";
+// ======================================================================
 
-const mailboxInitialState = {
+const mailboxInitialState: MailboxInterface = {
   total: 0,
   unread: 0,
   message: {},
   messages: [],
   fetchingMessages: false, // TODO: not sure still about how to set the flag fetching...
+  currentView: MailboxViewEnum.SPLIT
 }
 
 const getNumberOfUnreadMsgs = (msgs: MailboxMessagesInterface[]) => msgs.filter(({ read }) => !read).length;
@@ -56,6 +60,9 @@ const mailboxReducers = {
       message: {}
     }
   },
+  updateMailboxView: (state: MailboxInterface, { payload }: { payload: MailboxViewType}) => {
+    state.currentView = payload
+  }
 }
 
 const mailboxSliceOptions: CreateSliceOptions = {
@@ -65,5 +72,5 @@ const mailboxSliceOptions: CreateSliceOptions = {
 }
 
 export const mailboxSlice = createSlice(mailboxSliceOptions);
-export const { markAsRead, remove, fetch, fetchAll, clearMsgFromView } = mailboxSlice.actions;
+export const { markAsRead, remove, fetch, fetchAll, clearMsgFromView, updateMailboxView } = mailboxSlice.actions;
 export default mailboxSlice.reducer;
