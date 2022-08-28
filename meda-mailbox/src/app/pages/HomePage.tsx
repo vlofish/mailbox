@@ -20,23 +20,21 @@ const boxStyle = {
 	},
 }
 
-function Inbox() {
-	return (
-		<Grid container spacing={2} className='text-align-center'>
-			<Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-				<Box className='full-vector-height-width' sx={boxStyle}>
-					<MessageCounterFeat />
-					<Link to={PagePathEnum.INBOX_SPLIT_VIEW}>
-						<ButtonComp
-							text="View Messages"
-							mui={MUI_WARNING_BUTTON}
-						/>
-					</Link>
-				</Box>
-			</Grid>
+const Inbox = () => (
+	<Grid container spacing={2} className='text-align-center'>
+		<Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+			<Box className='full-vector-height-width' sx={boxStyle}>
+				<MessageCounterFeat />
+				<Link to={PagePathEnum.INBOX_SPLIT_VIEW}>
+					<ButtonComp
+						text="View Messages"
+						mui={MUI_WARNING_BUTTON}
+					/>
+				</Link>
+			</Box>
 		</Grid>
-	)
-}
+	</Grid>
+)
 
 export default function HomePage() {
 	return <Inbox />
