@@ -1,5 +1,5 @@
 // =========================================
-import { 
+import {
   markMessageAsReadThunk,
   removeSpecificMessageThunk
 } from "../store/thunks/mailbox.thunk";
@@ -36,9 +36,9 @@ export const useMessageAsRead = () => {
  * [`a`] Exposure of the `useNavigate` hook.
  * [`b`] allowing to programmatically navigate to a page path.
  */
-export const useMailboxNavigateTo  = () => {
+export const useMailboxNavigateTo = () => {
   const mailboxNavigate = useNavigate();
   const navigateToSpecificPath = (path: string) => mailboxNavigate(path, { replace: true });
   return [mailboxNavigate, navigateToSpecificPath] as const;
 }
- 
+
