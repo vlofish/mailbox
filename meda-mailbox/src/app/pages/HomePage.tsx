@@ -1,36 +1,43 @@
 // =============================================================
-import Grid from '@mui/material/Grid';
-import Container from '@mui/material/Container';
+import '../common/common.css';
 
-import { NavbarFeat } from "../features/NavbarFeat";
-import { SidebarFeat } from '../features/SidebarFeat';
-import { FeedbackFeat } from "../features/FeedbackFeat";
-import { MessageViewFeat } from "../features/MessageViewFeat";
+import { Link } from 'react-router-dom';
+import { ButtonComp } from '../components/ButtonComp';
+import { PagePathEnum } from '../common/enums/page-paths.enum';
+import { MessageCounterFeat } from '../features/MessageCounterFeat';
+import { MUI_WARNING_BUTTON } from '../common/constants/button.constant';
+
+import Box from "@mui/material/Box/Box";
+import Grid from "@mui/material/Grid/Grid";
 // =============================================================
 
-const HomeGrid = () => {
-	return (
-		<Grid container spacing={2}>
-			<Grid item xs={12} style={{ textAlign: "center" }}>
-				<NavbarFeat />
-			</Grid>
-			<Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-				<SidebarFeat />
-			</Grid>
-			<Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-				<MessageViewFeat />
-			</Grid>
-			<Grid item xs={12} style={{ textAlign: "center" }}>
-				<FeedbackFeat />
-			</Grid>
-		</Grid>
-	);
+const boxStyle = {
+	width: '100wh',
+	height: '100vh',
+	backgroundColor: 'primary.main',
+	'&:hover': {
+		backgroundColor: 'primary.dark',
+	},
 }
 
-export function HomePage() {
+function Inbox() {
 	return (
-		<Container maxWidth="md">
-			<HomeGrid />
-		</Container>
-	);
+		<Grid container spacing={2} className='text-align-center'>
+			<Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+				<Box className='full-vector-height-width' sx={boxStyle}>
+					<MessageCounterFeat />
+					<Link to={PagePathEnum.INBOX_SPLIT_VIEW}>
+						<ButtonComp
+							text="View Messages"
+							mui={MUI_WARNING_BUTTON}
+						/>
+					</Link>
+				</Box>
+			</Grid>
+		</Grid>
+	)
+}
+
+export default function HomePage() {
+	return <Inbox />
 }

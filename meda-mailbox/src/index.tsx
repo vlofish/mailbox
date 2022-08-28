@@ -1,27 +1,23 @@
 // ======================================================================
-import React from 'react';
-import ReactDOM from 'react-dom/client';
 import './index.css';
-import reportWebVitals from './reportWebVitals';
 
 import { Provider } from 'react-redux';
+
+import App from './App';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import store from './app/common/store/store';
-import InboxPage from './app/pages/InboxPage';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import reportWebVitals from './reportWebVitals';
 // ======================================================================
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
-        {/* <App /> */}
-        <Routes>
-          <Route path='/' element={<InboxPage />} />
-        </Routes>
-      </BrowserRouter>
+      <App />
     </Provider>
   </React.StrictMode>
 );
