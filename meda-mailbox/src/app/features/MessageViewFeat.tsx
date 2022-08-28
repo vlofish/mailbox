@@ -3,24 +3,35 @@ import { Dispatch } from "redux";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { MailboxInterface } from "../common/interfaces";
+import { PagePathEnum } from "../common/enums/page-paths.enum";
+import { clearMsgFromView } from "../common/store/slicers/mailbox.slice";
 import { MessageViewComp } from "../components/message-view/MessageViewComp";
 import { MessageActionsComp } from "../components/message-view/MessageActionsComp";
-import { useMessageAsRead, useMessageRemoval } from "../common/hooks/mailbox.hook";
 import { MUI_ERROR_BUTTON, MUI_WARNING_BUTTON } from "../common/constants/button.constant";
-import { fetchSpecificMessageThunk } from "../common/store/thunks/mailbox.thunk";
+import { useMailboxNavigateTo, useMessageAsRead, useMessageRemoval } from "../common/hooks/mailbox.hook";
 // =====================================================
 
+let navigateToPath: any;
 
 let mailboxDispatch: Dispatch<any>;
 
 let removeMessageDispatch: (messageID: string) => Dispatch<any>;
 
-const handleRemovalOfSpecificMessage = (messageID: string) => removeMessageDispatch(messageID);
+const handleRemovalOfSpecificMessage = (messageID: string) => {
+	removeMessageDispatch(messageID);
+	navigateToPath(PagePathEnum.INBOX_PANEL_VIEW);
+}
 
-const handleDisplayOfSpecificMessage = (messageID: string, categoryID: string) => mailboxDispatch(fetchSpecificMessageThunk(messageID, categoryID));
+const handleCloseMessageView = () => {
+	// mailboxDispatch(fetchSpecificMessageThunk(messageID, categoryID));
+	mailboxDispatch(clearMsgFromView(null));
+	navigateToPath(PagePathEnum.INBOX_PANEL_VIEW);
+}
 
 
 export function MessageViewFeat() {
+	[, navigateToPath] = useMailboxNavigateTo();
+
 	[mailboxDispatch, removeMessageDispatch] = useMessageRemoval();
 
 	const [, markMessageReadDispatch] = useMessageAsRead();
@@ -32,13 +43,13 @@ export function MessageViewFeat() {
 	 */
 	useEffect(() => {
 		markMessageReadDispatch(message.id);
-	}, [message]);
+	}, [message, markMessageReadDispatch]);
 
 	const messageActions = [
 		{
-			text: 'Nu Mission',
+			text: 'Close',
 			muiType: MUI_WARNING_BUTTON,
-			handleClick: () => { handleDisplayOfSpecificMessage(message.id, message.subject) }
+			handleClick: () => { handleCloseMessageView() }
 		},
 		{
 			text: 'Delete',

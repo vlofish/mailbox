@@ -1,19 +1,24 @@
 // ===================================================================
 import { Dispatch } from "redux";
 import { useEffect } from "react";
-import Box from '@mui/material/Box';
 import { Grid } from "@mui/material";
 import { useSelector } from "react-redux";
 import { ButtonComp } from "../components/ButtonComp";
+import { PagePathEnum } from "../common/enums/page-paths.enum";
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
-import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import { fetchSpecificMessageThunk } from "../common/store/thunks/mailbox.thunk";
 import { MailboxInterface, MailboxMessagesInterface } from "../common/interfaces";
-import { useMessageAsRead, useMessageRemoval } from "../common/hooks/mailbox.hook";
-import { MUI_ERROR_BUTTON, MUI_PRIMARY_BUTTON, MUI_SECONDARY_BUTTON, MUI_SUCCESS_BUTTON } from "../common/constants/button.constant";
-import { clearMsgFromView } from "../common/store/slicers/mailbox.slice";
+import { useMailboxNavigateTo, useMessageAsRead, useMessageRemoval } from "../common/hooks/mailbox.hook";
+
+import Box from '@mui/material/Box';
+import { 
+	MUI_SUCCESS_BUTTON,
+	MUI_ERROR_BUTTON, MUI_SECONDARY_BUTTON, 
+} from "../common/constants/button.constant";
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 // ===================================================================
 
+let navigateToPath: any;
 let messages: any[];
 let clickedRow: any;
 // let tableRows: MailboxMessagesInterface[] = [
@@ -31,11 +36,26 @@ const tableColumns: GridColDef[] = [
 ];
 const handleTableRowClick = (row: GridRowsProp) => {
 	clickedRow = row
-	mailboxDispatch(clearMsgFromView(null));
+	// mailboxDispatch(clearMsgFromView(null));
+
+	// if view is single activate the below
+	// navigateToPath("/home/messageview", { replace: true });
 };
 const handleMarkMessageAsRead = (messageID: string) => markMessageReadDispatch(messageID);
-const handleRemovalOfSpecificMessage = (messageID: string) => removeMessageDispatch(messageID);
-const handleDisplayOfSpecificMessage = (messageID: string, categoryID: string) => mailboxDispatch(fetchSpecificMessageThunk(messageID, categoryID));
+
+/**
+ * TODO: if there are shared feats of messages move it to utils
+ * @param messageID 
+ */
+const handleRemovalOfSpecificMessage = (messageID: string) => {
+	removeMessageDispatch(messageID);
+}
+
+const handleDisplayOfSpecificMessage = (messageID: string, categoryID: string) => {
+	mailboxDispatch(fetchSpecificMessageThunk(messageID, categoryID));
+	navigateToPath(PagePathEnum.INBOX_MESSAGE_VIEW)
+}
+
 const handleMessagesChange = (messages: any) => tableRows = messages.map((message: MailboxMessagesInterface, index: number) => ({ ...message, index }));
 
 
@@ -83,6 +103,9 @@ function MessageActionButtonsComp(props: { messages: any }) {
 
 function MessagesPanel() {
 
+	[, navigateToPath] = useMailboxNavigateTo();
+
+
 	[, markMessageReadDispatch] = useMessageAsRead();
 
 	[mailboxDispatch, removeMessageDispatch] = useMessageRemoval();
@@ -91,6 +114,7 @@ function MessagesPanel() {
 		handleMessagesChange(messages);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [messages]);
+
 
 	messages = useSelector((state: MailboxInterface) => {
 		return state.messages;
