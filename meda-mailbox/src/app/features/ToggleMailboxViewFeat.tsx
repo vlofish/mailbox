@@ -1,10 +1,13 @@
 // ======================================================================
-import { ButtonComp } from "../components/ButtonComp";
 import { MailboxViewEnum, PagePathEnum } from "../common/enums/";
-import { MUI_SUCCESS_BUTTON } from "../common/constants/button.constant";
 import { updateMailboxView } from "../common/store/slicers/mailbox.slice";
 import { useMailboxDispatch, useMailboxNavigateTo } from "../common/hooks/mailbox.hook";
+
+import Switch from '@mui/material/Switch';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
 // ======================================================================
+
 
 let navigateToPath: any;
 
@@ -21,7 +24,7 @@ let currentPath = PagePathEnum.INBOX_SPLIT_VIEW;
  * 
  * On button click the user is redirected to specific page path.
  */
-const toggleMailboxView = () => {
+const toggleView = () => {
   currentView = currentView === MailboxViewEnum.PANEL 
     ? MailboxViewEnum.SPLIT 
     : MailboxViewEnum.PANEL;
@@ -34,14 +37,25 @@ const toggleMailboxView = () => {
     mailboxDispatch(updateMailboxView(currentView));
 }
 
+const ToggleMailboxView = () => (
+  <FormGroup>
+    <FormControlLabel
+      control={
+        <Switch
+          checked={currentView === MailboxViewEnum.SPLIT}
+          onChange={toggleView}
+          aria-label="view switch"
+        />
+      }
+      label={currentView}
+    />
+  </FormGroup>
+)
+
 export function ToggleMailboxViewFeat() {
   mailboxDispatch = useMailboxDispatch();
-  
+
   [, navigateToPath] = useMailboxNavigateTo();
   
-  return <ButtonComp
-    text={currentView}
-    mui={MUI_SUCCESS_BUTTON}
-    handleClick={toggleMailboxView}
-  />
+  return <ToggleMailboxView />
 }
