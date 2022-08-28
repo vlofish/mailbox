@@ -2,8 +2,8 @@
 import '../common/common.css';
 
 import { Link } from 'react-router-dom';
+import { PagePathEnum } from '../common/enums/';
 import { ButtonComp } from '../components/ButtonComp';
-import { PagePathEnum } from '../common/enums/page-paths.enum';
 import { MessageCounterFeat } from '../features/MessageCounterFeat';
 import { MUI_WARNING_BUTTON } from '../common/constants/button.constant';
 

@@ -2,8 +2,8 @@
 import { Dispatch } from "redux";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { PagePathEnum } from "../common/enums/";
 import { MailboxInterface } from "../common/interfaces";
-import { PagePathEnum } from "../common/enums/page-paths.enum";
 import { clearMsgFromView } from "../common/store/slicers/mailbox.slice";
 import { MessageViewComp } from "../components/message-view/MessageViewComp";
 import { MessageActionsComp } from "../components/message-view/MessageActionsComp";

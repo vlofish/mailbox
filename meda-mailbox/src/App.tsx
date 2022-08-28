@@ -1,5 +1,5 @@
 // ======================================================================
-import { PagePathEnum } from "./app/common/enums/page-paths.enum";
+import { PagePathEnum } from "./app/common/enums";
 
 import {
   Route, Link,
