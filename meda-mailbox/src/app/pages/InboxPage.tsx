@@ -3,6 +3,7 @@ import '../common/common.css';
 
 import { Link } from 'react-router-dom';
 import { ButtonComp } from '../components/ButtonComp';
+import { PagePathEnum } from '../common/enums/page-paths.enum';
 import { MessageCounterFeat } from '../features/MessageCounterFeat';
 import { MUI_WARNING_BUTTON } from '../common/constants/button.constant';
 
@@ -25,7 +26,7 @@ function Inbox() {
       <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
         <Box className='full-vector-height-width' sx={boxStyle}>
           <MessageCounterFeat />
-          <Link to='/home'>
+          <Link to={PagePathEnum.INBOX_SPLIT_VIEW}>
             <ButtonComp
               text="View Messages"
               mui={MUI_WARNING_BUTTON}
