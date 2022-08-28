@@ -1,12 +1,11 @@
 // =========================================================================
-// import { Dispatch } from "redux";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-
-import { Box } from "@mui/system";
 import { MailboxInterface } from "../common/interfaces";
 import { useMailboxDispatch } from "../common/hooks/mailbox.hook";
 import { fetchAllMessagesThunk } from "../common/store/thunks/mailbox.thunk";
+
+import Typography from "@mui/material/Typography/Typography";
 // =========================================================================
 
 
@@ -24,8 +23,14 @@ export function MessageCounterFeat() {
   }, [mailboxDispatch])
 
   return (
-    <Box>
-      <label> {`You have ${unread} unread(s) out of ${total} messages.`} </label>
-    </Box>
+    <Typography
+      noWrap
+      variant="h6"
+      component="div"
+      sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+    >
+      {`You have ${unread} unread(s) out of ${total} messages.`}
+    </Typography>
+
   );
 }
