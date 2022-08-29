@@ -5,10 +5,9 @@ export function MessageViewComp(props: any) {
     <Card sx={{ minWidth: 50 }}>
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          {props.info.from}
-        </Typography>
-        <Typography variant="h5" component="div">
-          {props.info.subject}
+          From: {props.info.from}
+          <br />
+          Subject: {props.info.subject}
         </Typography>
         <Typography variant="body2">
           {props.info.message}
