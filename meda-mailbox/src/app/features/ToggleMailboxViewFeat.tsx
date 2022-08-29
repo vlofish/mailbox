@@ -44,7 +44,7 @@ const ToggleMailboxView = () => (
         <Switch
           checked={currentView === MailboxViewEnum.SPLIT}
           onChange={toggleView}
-          aria-label="view switch"
+          aria-label="toggler"
         />
       }
       label={currentView}
