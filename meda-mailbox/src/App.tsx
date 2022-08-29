@@ -8,7 +8,7 @@ import {
 import HomePage from "./app/pages/HomePage";
 import InboxPage from "./app/pages/InboxPage";
 import SplitViewPage from "./app/pages/SplitViewPage";
-import SingleViewPage from "./app/pages/SingleViewPage";
+import PanelViewPage from "./app/pages/PanelViewPage";
 import MessageViewPage from "./app/pages/MessageViewPage";
 // ======================================================================
 
@@ -19,7 +19,7 @@ function App() {
         <Route path='/' element={<HomePage />} />
         <Route path={`/${PagePathEnum.INBOX}`} element={<InboxPage />}>
           <Route path={`${PagePathEnum.SPLIT_VIEW}`} element={<SplitViewPage />} />
-          <Route path={`${PagePathEnum.PANEL_VIEW}`} element={<SingleViewPage />} />
+          <Route path={`${PagePathEnum.PANEL_VIEW}`} element={<PanelViewPage />} />
           <Route path={`${PagePathEnum.INBOX_MESSAGE_VIEW}`} element={<MessageViewPage />} />
         </Route>
         <Route

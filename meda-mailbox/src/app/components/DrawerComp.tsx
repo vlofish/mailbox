@@ -5,6 +5,8 @@ import {
 } from 'react';
 import Drawer from '@mui/material/Drawer';
 import { Fab } from '@mui/material';
+
+import FeedbackIcon from '@mui/icons-material/Feedback';
 // =======================================================
 
 type Anchor = 'bottom';
@@ -32,10 +34,8 @@ export default function DrawerComp(props: any) {
   return (
     <div>
       <Fragment key={anchor}>
-        <Fab variant="extended" onClick={toggleDrawer(anchor, true)}>
-          <label>
-            Contact us.
-          </label>
+        <Fab size='small' color='secondary' aria-label="feedback" onClick={toggleDrawer(anchor, true)}>
+          <FeedbackIcon />
         </Fab>
         <Drawer
           anchor={anchor}

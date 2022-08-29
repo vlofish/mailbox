@@ -15,8 +15,8 @@ export const fetchAllMessagesThunk = () =>
   }
 
 
-  // TODO: handle better the err scenario.
-  // TODO: add debouncer for protecting against many calls.
+// TODO: handle better the err scenario.
+// TODO: add debouncer for protecting against many calls.
 /**
  * Gets a specific message to read.
  * Allows the possibility of redirect to a specific page for reading the message in the case that `pathToNavigate` is defined.
@@ -37,8 +37,15 @@ export const fetchSpecificMessageThunk = (messageID: string, categoryID: string,
       )
   }
 
-
-export const removeSpecificMessageThunk = (messageID: string) =>
+/**
+ * Delete a specific message.
+ * Allows the possibility of redirect to a specific page after deleting the message in the case that `pathToNavigate` is defined.
+ * 
+ * @param messageID 
+ * @param navigateToPath A `useNavigate()` typeof Function.
+ * @param pathToNavigate The path `/x/y/z` we want to navigate after getting the message.
+ */
+export const removeSpecificMessageThunk = (messageID: string, navigateToPath: Function = () => { }, pathToNavigate: string = '') =>
   (dispatch: Dispatch, getState: Function) => {
     mailboxSvc.deleteMessage(messageID)
       .subscribe(
@@ -51,6 +58,7 @@ export const removeSpecificMessageThunk = (messageID: string) =>
           }
 
           dispatch(remove(payload));
+          if(pathToNavigate) navigateToPath(pathToNavigate);
         }
       )
   }

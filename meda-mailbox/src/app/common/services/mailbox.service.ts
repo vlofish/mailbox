@@ -31,7 +31,7 @@ class MailboxService {
           return {
             message,
             id: messageID,
-            from: 'From: Rebel Base',
+            from: 'Rebel Base',
             subject: categoryID,
           };
         }),
