@@ -1,7 +1,7 @@
 // ========================================
 import httpSvc from "./http.service";
 import { Observable, of } from "rxjs";
-import { map, first } from "rxjs/operators";
+import { map, first, catchError } from "rxjs/operators";
 import { MailboxMessagesInterface } from "../interfaces";
 // =========================================
 
@@ -18,16 +18,20 @@ class MailboxService {
     if (!random) random = Math.ceil(Math.random() * 10);
 
     // TODO: handle any error thrown by httpSvc
+    // return httpSvc.get(`onpurposeerr`)
     return httpSvc.get(`${categoryID}/${random}/`)
       .pipe(
         first(),
+        catchError(() => of(undefined)),
         map((res: any) => {
+          if (!res) return undefined;
+
           const message = this.dummyMsgGenerator(categoryID, res);
 
           return {
             message,
             id: messageID,
-            from: 'From: Rebel Base',
+            from: 'Rebel Base',
             subject: categoryID,
           };
         }),
@@ -44,13 +48,13 @@ class MailboxService {
         first(),
         map((res: any, index) => {
           const messages: MailboxMessagesInterface[] = [];
-          
+
           for (let key in res) {
             messages.push({
               id: `m${index++}`,
               read: false,
               subject: key,
-              preview: 'preview placeholder',
+              preview: res[key],
             })
           }
 

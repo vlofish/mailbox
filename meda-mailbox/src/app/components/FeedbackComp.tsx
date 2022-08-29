@@ -4,7 +4,7 @@ import {
   onValue,
   child, push, update
 } from "firebase/database";
-import { Box, Divider, Grid } from "@mui/material";
+import { Divider, Grid } from "@mui/material";
 import { ButtonComp } from "../components/ButtonComp";
 import { TextareaComp } from "../components/TextareaComp";
 import { db as FIRE_DB, dbName as DB_NAME } from "../app.config";
@@ -83,7 +83,9 @@ export function FeedbackComp() {
           mui={muiButtonProps}
           handleClick={() => { postComment() }} />
         <br />
-        <small><i>open the terminal to read some of the user's comments :P</i></small>
+        <small><i>Open the terminal to read some of the user's comments</i></small>
+        <br />
+        <small><i>Powered with Firebase</i></small>
         <br />
       </Grid>
     </Grid>

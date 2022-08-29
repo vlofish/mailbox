@@ -5,6 +5,7 @@ import { MouseEventHandler } from "react";
 export interface ButtonCompInterface {
   mui: MUIButtonCompInterface;
   text?: string;
+  disabled?: boolean;
   handleClick?: MouseEventHandler<HTMLButtonElement> | undefined;
 }
 

@@ -1,36 +1,46 @@
 // =============================================================
-import Grid from '@mui/material/Grid';
-import Container from '@mui/material/Container';
+import '../common/common.css';
 
-import { NavbarFeat } from "../features/NavbarFeat";
-import { SidebarFeat } from '../features/SidebarFeat';
-import { FeedbackFeat } from "../features/FeedbackFeat";
-import { MessageViewFeat } from "../features/MessageViewFeat";
+import { PagePathEnum } from '../common/enums/';
+import { ButtonComp } from '../components/ButtonComp';
+import { MessageCounterFeat } from '../features/MessageCounterFeat';
+import { useMailboxNavigateTo } from '../common/hooks/mailbox.hook';
+import { MUI_WARNING_BUTTON } from '../common/constants/button.constant';
+
+import Box from "@mui/material/Box/Box";
+import Grid from "@mui/material/Grid/Grid";
 // =============================================================
 
-const HomeGrid = () => {
-	return (
-		<Grid container spacing={2}>
-			<Grid item xs={12} style={{ textAlign: "center" }}>
-				<NavbarFeat />
-			</Grid>
-			<Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-				<SidebarFeat />
-			</Grid>
-			<Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-				<MessageViewFeat />
-			</Grid>
-			<Grid item xs={12} style={{ textAlign: "center" }}>
-				<FeedbackFeat />
-			</Grid>
-		</Grid>
-	);
+let navigateToPath: any;
+
+const boxStyle = {
+	width: '100wh',
+	height: '50vh',
+	backgroundColor: 'primary.main',
 }
 
-export function HomePage() {
-	return (
-		<Container maxWidth="md">
-			<HomeGrid />
-		</Container>
-	);
+const handleButtonClick = () => navigateToPath(PagePathEnum.INBOX);
+
+// TODO: fix layout using mui
+const Home = () => (
+	<Grid container className='text-align-center'>
+		<Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+			<Box className='full-vector-height-width' sx={boxStyle} />
+		</Grid>
+		<Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+			<Box className='full-vector-height-width' sx={boxStyle}>
+				<ButtonComp
+					text="View Messages"
+					mui={MUI_WARNING_BUTTON}
+					handleClick={handleButtonClick}
+				/>
+				<MessageCounterFeat />
+			</Box>
+		</Grid>
+	</Grid>
+)
+
+export default function HomePage() {
+	[, navigateToPath] = useMailboxNavigateTo();
+	return <Home />
 }

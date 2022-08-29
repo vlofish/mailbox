@@ -15,20 +15,37 @@ export const fetchAllMessagesThunk = () =>
   }
 
 
-// TODO: add debouncer from lodash or rxjs for protecting against many calls
-// TODO: add err scenario
-export const fetchSpecificMessageThunk = (messageID: string, categoryID: string) =>
+// TODO: handle better the err scenario.
+// TODO: add debouncer for protecting against many calls.
+/**
+ * Gets a specific message to read.
+ * Allows the possibility of redirect to a specific page for reading the message in the case that `pathToNavigate` is defined.
+ * 
+ * @param messageID 
+ * @param categoryID 
+ * @param navigateToPath A `useNavigate()` typeof Function.
+ * @param pathToNavigate The path `/x/y/z` we want to navigate after getting the message.
+ */
+export const fetchSpecificMessageThunk = (messageID: string, categoryID: string, navigateToPath: Function = () => { }, pathToNavigate: string = '') =>
   (dispatch: Dispatch) => {
     mailboxSvc.getMessage(messageID, categoryID)
       .subscribe(
         (res: any) => {
-          dispatch(fetch(res));
-        }
+          if(res) dispatch(fetch(res));
+          if (res && pathToNavigate) navigateToPath(pathToNavigate);
+        },
       )
   }
 
-
-export const removeSpecificMessageThunk = (messageID: string) =>
+/**
+ * Delete a specific message.
+ * Allows the possibility of redirect to a specific page after deleting the message in the case that `pathToNavigate` is defined.
+ * 
+ * @param messageID 
+ * @param navigateToPath A `useNavigate()` typeof Function.
+ * @param pathToNavigate The path `/x/y/z` we want to navigate after getting the message.
+ */
+export const removeSpecificMessageThunk = (messageID: string, navigateToPath: Function = () => { }, pathToNavigate: string = '') =>
   (dispatch: Dispatch, getState: Function) => {
     mailboxSvc.deleteMessage(messageID)
       .subscribe(
@@ -41,6 +58,7 @@ export const removeSpecificMessageThunk = (messageID: string) =>
           }
 
           dispatch(remove(payload));
+          if(pathToNavigate) navigateToPath(pathToNavigate);
         }
       )
   }
