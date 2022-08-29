@@ -19,7 +19,7 @@ const boxStyle = {
 	backgroundColor: 'primary.main',
 }
 
-const handleButtonClick = () => navigateToPath(PagePathEnum.INBOX_SPLIT_VIEW);
+const handleButtonClick = () => navigateToPath(PagePathEnum.INBOX);
 
 // TODO: fix layout using mui
 const Home = () => (
