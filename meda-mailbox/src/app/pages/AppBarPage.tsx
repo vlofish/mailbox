@@ -1,5 +1,4 @@
 // =============================================================
-import { SearchMessageFeat } from '../features/SearchMessageFeat';
 import { MessageCounterFeat } from '../features/MessageCounterFeat';
 import { ToggleMailboxViewFeat } from '../features/ToggleMailboxViewFeat';
 
@@ -13,9 +12,10 @@ export default function AppBarPage() {
 		<Box sx={{ flexGrow: 1 }}>
 			<AppBar position="static">
 				<Toolbar>
-					<ToggleMailboxViewFeat />
 					<MessageCounterFeat />
-					<SearchMessageFeat />
+					<ToggleMailboxViewFeat />
+					{/* TODO: implement the search functionality */}
+					{/* <SearchMessageFeat /> */}
 				</Toolbar>
 			</AppBar>
 		</Box>

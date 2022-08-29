@@ -83,7 +83,9 @@ export function FeedbackComp() {
           mui={muiButtonProps}
           handleClick={() => { postComment() }} />
         <br />
-        <small><i>open the terminal to read some of the user's comments :P</i></small>
+        <small><i>Open the terminal to read some of the user's comments</i></small>
+        <br />
+        <small><i>Powered with Firebase</i></small>
         <br />
       </Grid>
     </Grid>
