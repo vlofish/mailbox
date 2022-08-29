@@ -11,11 +11,11 @@ export const IsMessageReadComp = (props: { isRead: boolean }) => (
     {
       props.isRead
         ? <VisibilityIcon
-          fontSize="medium"
+          fontSize="large"
           sx={{ color: '#4caf50' }} />
         :
         <VisibilityOffIcon
-          fontSize="medium"
+          fontSize="large"
           sx={{ color: '#d9182e' }} />
     }
   </>
