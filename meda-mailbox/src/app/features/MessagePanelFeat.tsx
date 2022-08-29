@@ -3,11 +3,10 @@ import { Dispatch } from "redux";
 import { useEffect } from "react";
 import { Grid } from "@mui/material";
 import { useSelector } from "react-redux";
-import { ButtonComp } from "../components/ButtonComp";
 import { MailboxViewEnum, PagePathEnum } from "../common/enums/";
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import { fetchSpecificMessageThunk } from "../common/store/thunks/mailbox.thunk";
-import { MailboxInterface, MailboxMessagesInterface, MailboxViewType } from "../common/interfaces";
+import { ButtonCompInterface, MailboxInterface, MailboxMessagesInterface, MailboxViewType } from "../common/interfaces";
 import { useMailboxNavigateTo, useMessageAsRead, useMessageRemoval } from "../common/hooks/mailbox.hook";
 
 import Box from '@mui/material/Box';
@@ -15,14 +14,15 @@ import {
 	MUI_SUCCESS_BUTTON,
 	MUI_ERROR_BUTTON, MUI_SECONDARY_BUTTON,
 } from "../common/constants/button.constant";
-import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import { IsMessageReadComp } from "../components/IsMessageReadComp";
+import { MessageActionsComp } from "../components/message-view/MessageActionsComp";
 // ===================================================================
 
-let clickedRow: any;
+let clickedRow: any; // Reference for the values from the clicked row within the table
 
 let navigateToPath: any;
 
-let tableRows: GridRowsProp = [{ id: '', subject: '', preview: '', read: false }]; 
+let isPerformingAction = false; // Reference val for knowing whether the user is reading, deleting or marking as read.
 
 let mailboxDispatch: Dispatch<any>;
 
@@ -30,89 +30,93 @@ let removeMessageDispatch: (messageID: string) => Dispatch<any>;
 
 let markMessageReadDispatch: (messageID: string) => Dispatch<any>;
 
+let tableRows: GridRowsProp = [{ id: '', subject: '', preview: '', read: null }];
+
 const tableColumns: GridColDef[] = [
 	{ field: 'read', headerName: 'Is Read', width: 100 },
 	{ field: 'subject', headerName: 'Subject', width: 150 },
-	{ field: 'preview', headerName: 'Preview', width: 300 },
+	{ field: 'preview', headerName: 'Preview', width: 500 },
 ];
 
 /**
- * TODO: if there are shared feats of messages move it to utils
- * @param messageID 
+ * Marks the selected message as read based on its ID
  */
-const handleRemovalOfSpecificMessage = (messageID: string) => {
-	removeMessageDispatch(messageID);
-}
-
-// TODO: WIP
-const handleDisplayOfSpecificMessage = (messageID: string, categoryID: string) => {
-	mailboxDispatch(fetchSpecificMessageThunk(messageID, categoryID));
-}
-
 const handleMarkMessageAsRead = (messageID: string) => markMessageReadDispatch(messageID);
 
 /**
- * There are two scenarios:
+ * Removes the message based on the ID.
+ */
+const handleRemovalOfSpecificMessage = (messageID: string) => removeMessageDispatch(messageID);
+
+/**
+ * Displays a specific message in a different component based on the message and category ID
+ */
+const handleDisplayOfSpecificMessage = (messageID: string, categoryID: string) => mailboxDispatch(fetchSpecificMessageThunk(messageID, categoryID));
+
+/**
+ * There are two scenarios to support:
  * - `split` displays the message in the same view.
- * - `panel` calls the message to display and then moves on the message view.
- * @param row 
+ * - `panel` calls the message to display and then moves to the message view.
  */
 const handleTableRowClick = (row: MailboxMessagesInterface, currentView: MailboxViewType) => {
-	switch(currentView) {
+	setIsPerformingAction(true);
+	switch (currentView) {
 		case MailboxViewEnum.SPLIT:
 			clickedRow = row
 			break;
-		
+
 		case MailboxViewEnum.PANEL:
 			mailboxDispatch(fetchSpecificMessageThunk(row.id, row.subject, navigateToPath, PagePathEnum.INBOX_MESSAGE_VIEW));
 			break;
-
 	}
 };
 
-// TODO: WIP
+/**
+ * Helper for the `useEffect` hook.
+ * Updates the `tableRows` from the table based on the `messages` gotten from the store.
+ */
 const handleMessagesChange = (messages: any) => tableRows = messages.map((message: MailboxMessagesInterface, index: number) => ({ ...message, index }));
 
-const IsMessageReadComp = (props: { isRead: boolean }) => (
-	<>
-		<label> <strong> Read </strong> </label>
-		<FiberManualRecordIcon
-			fontSize="medium"
-			sx={{
-				color: props.isRead ? '#4caf50' : '#d9182e',
-			}}
-		/>
-	</>
-
-)
+const setIsPerformingAction = (performingAction: boolean) => isPerformingAction = performingAction;
 
 // TODO: style this comp, this is just a placeholder for now
-const NoActionsButtonsComp = (isMessageRead: boolean) => (
-	// <IsMessageReadComp isRead={isMessageRead} />
-	<></>
+const NoActionsButtonsComp = () => (
+	<div> <label> Messages Panel [style pending]</label></div>
 )
 
-const ActionButtonsComp = (props: { messageID: string, messageSubject: string }) => (
-	<>
-		<ButtonComp
-			text='Show Msg'
-			mui={MUI_SUCCESS_BUTTON}
-			handleClick={() => handleDisplayOfSpecificMessage(props.messageID, props.messageSubject)}
-		/> &nbsp;
-		<ButtonComp
-			text='Delete'
-			mui={MUI_ERROR_BUTTON}
-			handleClick={() => handleRemovalOfSpecificMessage(props.messageID)}
-		/> &nbsp;
-		<ButtonComp
-			text='Mark Read'
-			mui={MUI_SECONDARY_BUTTON}
-			handleClick={() => handleMarkMessageAsRead(props.messageID)}
-		/>
-	</>
-)
+/**
+ * Action buttons displayed at the bottom of the messages table in the `split` view.
+ * These go inside of the Footer of the table. 
+ */
+const ActionButtonsComp = (props: { messageID: string, messageSubject: string }) => {
+	const disableButtons = (!isPerformingAction || Boolean(!props.messageID));
+	const messageActions: ButtonCompInterface[] = [
+		{
+			text: 'Read',
+			disabled: disableButtons,
+			mui: MUI_SUCCESS_BUTTON,
+			handleClick: () => { handleDisplayOfSpecificMessage(props.messageID, props.messageSubject) }
+		},
+		{
+			text: 'Delete',
+			disabled: disableButtons,
+			mui: MUI_ERROR_BUTTON,
+			handleClick: () => { handleRemovalOfSpecificMessage(props.messageID) }
+		},
+		{
+			text: 'Mark Read',
+			disabled: disableButtons,
+			mui: MUI_SECONDARY_BUTTON,
+			handleClick: () => { handleMarkMessageAsRead(props.messageID) }
+		},
+	];
+	return <MessageActionsComp actions={messageActions} />
+}
 
-// TODO: get a single message obj; for now performance is impacted because of the array with big data sets.
+/**
+ * Panel footer displayed only when the view is the `split` one.
+ */
+// TODO: get a single message obj; for now performance is impacted when big data sets.
 function PanelFooterComp(props: { messages: MailboxMessagesInterface[] }) {
 	const messageID = props.messages[clickedRow?.index]?.id;
 	const isMessageRead = props.messages[clickedRow?.index]?.read;
@@ -137,27 +141,30 @@ function PanelFooterComp(props: { messages: MailboxMessagesInterface[] }) {
 }
 
 function MessagePanel() {
-
-	[, navigateToPath] = useMailboxNavigateTo();
+	[, navigateToPath] = useMailboxNavigateTo(); // Used in the `panel` view
 
 	[, markMessageReadDispatch] = useMessageAsRead();
 
 	[mailboxDispatch, removeMessageDispatch] = useMessageRemoval();
 
-	const [messages, currentView]: any[] = useSelector((state: MailboxInterface) => [state.messages, state.currentView]);
+	const [messages, currentView]: any[] = useSelector((state: MailboxInterface) => {
+		setIsPerformingAction(false);
+		return [state.messages, state.currentView];
+	});
+
 	useEffect(() => {
 		handleMessagesChange(messages);
 	}, [messages]);
 
-
 	return (
-		<Box sx={{ height: '40vh', width: '100%' }}>
+		<Box sx={{ height: '60vh', width: '100%' }}>
 			{
 				tableRows.length > 0
 					? <DataGrid
+						density="comfortable"
 						rows={tableRows}
 						columns={tableColumns}
-						onRowClick={(e) => handleTableRowClick(e.row, currentView)}
+						onRowClick={(e) => handleTableRowClick(e.row, currentView) }
 						components={{
 							Footer: currentView === MailboxViewEnum.SPLIT
 								? PanelFooterComp
@@ -167,7 +174,7 @@ function MessagePanel() {
 							footer: { messages },
 						}}
 					/>
-					: <label> Loading...  </label>
+					: <label> Loading...</label>
 			}
 		</Box>
 	);

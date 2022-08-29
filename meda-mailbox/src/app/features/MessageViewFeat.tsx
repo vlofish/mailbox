@@ -3,9 +3,10 @@ import { Dispatch } from "redux";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { PagePathEnum } from "../common/enums/";
-import { MailboxInterface } from "../common/interfaces";
+import { IsMessageReadComp } from "../components/IsMessageReadComp";
 import { clearMsgFromView } from "../common/store/slicers/mailbox.slice";
 import { MessageViewComp } from "../components/message-view/MessageViewComp";
+import { ButtonCompInterface, MailboxInterface } from "../common/interfaces";
 import { MessageActionsComp } from "../components/message-view/MessageActionsComp";
 import { MUI_ERROR_BUTTON, MUI_WARNING_BUTTON } from "../common/constants/button.constant";
 import { useMailboxNavigateTo, useMessageAsRead, useMessageRemoval } from "../common/hooks/mailbox.hook";
@@ -17,17 +18,15 @@ let mailboxDispatch: Dispatch<any>;
 
 let removeMessageDispatch: (messageID: string) => Dispatch<any>;
 
-const handleRemovalOfSpecificMessage = (messageID: string) => {
-	removeMessageDispatch(messageID);
-	navigateToPath(PagePathEnum.INBOX_PANEL_VIEW);
-}
-
 const handleCloseMessageView = () => {
-	// mailboxDispatch(fetchSpecificMessageThunk(messageID, categoryID));
 	mailboxDispatch(clearMsgFromView(null));
 	navigateToPath(PagePathEnum.INBOX_PANEL_VIEW);
 }
 
+const handleRemovalOfSpecificMessage = (messageID: string) => {
+	removeMessageDispatch(messageID);
+	navigateToPath(PagePathEnum.INBOX_PANEL_VIEW);
+}
 
 export function MessageViewFeat() {
 	[, navigateToPath] = useMailboxNavigateTo();
@@ -45,16 +44,18 @@ export function MessageViewFeat() {
 		markMessageReadDispatch(message.id);
 	}, [message, markMessageReadDispatch]);
 
-	const messageActions = [
+	const messageActions: ButtonCompInterface[] = [
 		{
 			text: 'Close',
-			muiType: MUI_WARNING_BUTTON,
+			disabled:false,
+			mui: MUI_WARNING_BUTTON,
 			handleClick: () => { handleCloseMessageView() }
 		},
 		{
 			text: 'Delete',
-			muiType: MUI_ERROR_BUTTON,
-			handleClick: () => { handleRemovalOfSpecificMessage(message.id) }
+			disabled:false,
+			mui: MUI_ERROR_BUTTON,
+			handleClick: () => { handleRemovalOfSpecificMessage(message.id) },
 		}
 	]
 
@@ -63,10 +64,13 @@ export function MessageViewFeat() {
 			{
 				message?.message
 					?
-					<MessageViewComp info={{ ...message }}>
-						<MessageActionsComp actions={messageActions} />
-					</MessageViewComp>
-					:	<></>
+					<>
+						<MessageViewComp info={{ ...message }}>
+							<MessageActionsComp actions={messageActions} />
+						</MessageViewComp>
+						<IsMessageReadComp isRead={!message.read} />
+					</>
+					: <></>
 			}
 		</>
 	);

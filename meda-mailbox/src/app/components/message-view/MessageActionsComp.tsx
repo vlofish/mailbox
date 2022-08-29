@@ -1,9 +1,10 @@
 //=============================================================
 import { ButtonComp } from "../ButtonComp";
+import { ButtonCompInterface } from "../../common/interfaces";
 import CardActions from "@mui/material/CardActions/CardActions";
 //=============================================================
 
-export function MessageActionsComp(props: any) {
+export function MessageActionsComp(props: { actions: ButtonCompInterface[] }) {
   return (
     <CardActions>
       {props.actions.map((action: any, index: number) => {
@@ -11,8 +12,9 @@ export function MessageActionsComp(props: any) {
           <ButtonComp
             key={index}
             text={action.text}
-            mui={action.muiType}
+            mui={action.mui}
             handleClick={action.handleClick}
+            disabled={action.disabled}
           />
         )
       })}
